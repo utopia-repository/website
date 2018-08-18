@@ -1,0 +1,374 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name=viewport content="width=device-width, initial-scale=1">
+<title>The Utopia Repository</title>
+<link rel="stylesheet" type="text/css" href="gstyle.css">
+
+<style>
+/* Better scaling of the legend table on smaller devices */
+@media (min-width: 1200px) {
+    table#legend-table {
+        float: right;
+        width: 15%;
+    }
+}
+</style>
+
+<script>
+// Map which sections are available for each OS version
+var dists = {
+    'sid': ['main', 'imports', 'forks', 'nightlies'],
+    'stretch': ['main', 'nightlies', 'imports', 'forks', 'rlw'],
+    'jessie': ['main', 'backports', 'nightlies', 'imports', 'rlw'],
+    'bionic': ['main', 'imports', 'forks'],
+    'xenial': ['main', 'rlw']
+}
+
+// Map distro codenames to display name
+var displayed_names = {
+    'sid': 'Debian Testing/Unstable (buster/sid)',
+    'stretch': 'Debian 9 (stretch)',
+    'jessie': 'Debian 8 (jessie)',
+    'bionic': 'Ubuntu 18.04 LTS (bionic)',
+    'xenial': 'Ubuntu 16.04 LTS (xenial)'
+}
+
+// Display links for certain sections
+var section_links = {
+    'rlw': 'https://github.com/roblox-linux-wrapper/roblox-linux-wrapper'
+}
+
+// Default OS version, components, and repository URL
+var selected_os = 'sid'
+var selected_components = ['main']
+var base_url = 'http://deb.utopia-repository.org/'
+
+// Sets the HTTPS URL for the repository. Leave blank to disable.
+var ssl_url = 'https://deb.utopia-repository.org/'
+
+// Defines which OS versions support HTTPS, and whether apt-transport-https is required for this.
+// 0: no HTTPS support, 1: requires apt-transport-https, 2: native support.
+var https_support = {
+    'sid': 2,
+    'stretch': 1,
+    'jessie': 1,
+    'bionic': 2,
+    'xenial': 1
+}
+
+// Defines special release/suite combinations in the suite picker
+var special_cases = {'rlw': 'rlw main',
+                     'backports': '$current-backports main',
+                     'nightlies': '$current-nightlies main'}
+
+// Internal value: whether the SSL checkbox is selected.
+var use_ssl = false
+
+function init() {
+    // Populate the drop down list of displayed dists with the ones defined above.
+    os_selector = document.getElementById('os_selector')
+
+    for (dist in dists) {
+        option = document.createElement('option')
+        option.value = dist
+        // Prefer the display name for each distribution, unless it doesn't exist.
+        if (displayed_names[dist]) {
+            option.textContent = displayed_names[dist]
+        } else {
+            option.textContent = dist
+        }
+        os_selector.appendChild(option)
+    }
+
+    update_available_components()
+}
+
+function refresh_text() {
+    console.log("Selected distribution " + selected_os)
+    console.log("Selected components " + selected_components)
+
+    displayed_components = []
+    link = ''
+
+    // When use_ssl changes, show/hide the note about apt-transport-https being needed for HTTPS support
+    note = document.getElementById('https_transport_note')
+    if (use_ssl == true && https_support[selected_os] != 0) {
+        real_base_url = ssl_url
+
+        // Only show the apt-transport-https note if required.
+        if (https_support[selected_os] == 1) {
+            note.style = ''
+        } else {
+            note.style = 'display:none;'
+        }
+    } else {
+        real_base_url = base_url
+        note.style = 'display:none;'
+    }
+
+    console.log(real_base_url)
+
+    // Find special cases, add their content, and remove it from the rest of the displayed dists.
+    for (i = 0; i < selected_components.length; i++) {
+        component = selected_components[i]
+        if (special_cases[component]) {
+            // XXX: pseudo-substitution is ugly; perhaps we should abstract this further
+            special_url = real_base_url + ' ' + special_cases[component].replace('$current', selected_os)
+            special_link = 'deb ' + special_url + '\ndeb-src ' + special_url + '\n'
+            link += special_link
+        } else {
+            displayed_components.push(component)
+        }
+    }
+
+    if (displayed_components.length > 0) {
+        // Write both deb (binary) and deb-src (source) links.
+        url = real_base_url + ' ' + selected_os + ' ' + displayed_components.join(' ')
+        link += 'deb ' + url + '\ndeb-src ' + url
+    }
+
+    document.getElementById('sources_list').innerHTML = link
+}
+
+function update_selected_components() {
+    component_selector = document.getElementById('component_selector')
+    checkboxes = component_selector.childNodes
+    selected_components = []
+
+    // Iterate over all the checkboxes to see if they're checked. If so,
+    // add the value they represent to the list of selected components.
+    for (i = 0; i < checkboxes.length; i++) {
+        checkbox = checkboxes[i]
+        if (checkbox.checked && checkbox.value != "Use HTTPS?") {
+            selected_components.push(checkbox.value)
+        }
+    }
+    refresh_text()
+}
+
+function update_available_components() {
+    component_selector = document.getElementById('component_selector')
+    os_selector = document.getElementById('os_selector')
+
+    // First, clear all component choices.
+    while (component_selector.hasChildNodes()) {
+        component_selector.removeChild(component_selector.lastChild)
+    }
+
+    // Find the selected dist and populate a list of component choices
+    // using that. Each choice is a check box.
+    selected_os = os_selector.options[os_selector.selectedIndex].value
+    components = dists[selected_os]
+
+    for (var i = 0; i < components.length; i++) {
+        component = components[i]
+        checkbox = document.createElement('input')
+        checkbox.type = 'checkbox'
+        checkbox.value = component
+        checkbox.onchange = function() {update_selected_components();}
+
+        if (i == 0) {
+            // By default, mark the first option (usually the "main" component
+            // as enabled).
+            checkbox.checked = true
+            selected_components = [component]
+        }
+
+        component_selector.appendChild(checkbox)
+
+        // Also create the caption for each choice.
+        component_text = document.createTextNode(component)
+        if (section_links[component]) {
+            caption = document.createElement('a');
+            caption.href = section_links[component]
+            caption.appendChild(component_text);
+        } else {
+            caption = component_text
+        }
+        component_selector.appendChild(caption)
+    }
+
+    if (ssl_url != '' && https_support[selected_os] != 0) {
+        // Add an option to toggle SSL on or off, if supported.
+        sslvar_text = "Use HTTPS?"
+        checkbox = document.createElement('input')
+        checkbox.type = 'checkbox'
+        checkbox.value = sslvar_text
+        checkbox.id = 'sslcheckbox'
+        checkbox.checked = use_ssl // Restore the previous checked state
+        checkbox.onchange = function() {
+            use_ssl = document.getElementById('sslcheckbox').checked
+            console.log("use_ssl set to " + use_ssl)
+            refresh_text()
+        }
+        component_selector.appendChild(checkbox)
+
+        text = document.createTextNode(sslvar_text)
+        component_selector.appendChild(text)
+    }
+
+    refresh_text()
+}
+</script>
+<noscript><style> .requiresjs { display: none } </style></noscript>
+</head>
+
+<body onload="init()">
+<h1><a href="/"><img src="urepo.png" class="logo" alt="Utopia Repository Logo"></a>The Utopia Repository</h1>
+
+<div class="lead">
+    <p>View the repo in your browser: <a href="dists/">dists/</a> <a href="pool/">pool/</a></p>
+    <p><b>The Utopia Repository</b> is <a href="https://qa.debian.org/developer.php?login=James+Lu">James Lu</a>'s personal APT repository for Debian and Ubuntu. Supported architectures are amd64 and (partially) i386.</p>
+    <p id="disclaimer">Absolutely no warranty is provided for the use of any software in this repository; use at your own risk!<br>All credit goes out to the software's original developers.</p>
+</div>
+
+<h2 id="news">News</h2>
+<ul class="lead">
+    <li><b>2018-08-18</b>:
+        The Utopia Repository moves to a new address: <b>deb.utopia-repository.org</b><br>
+        Nightly builds will now be served from: <b>ni.deb.utopia-repository.org</b>
+</ul>
+
+<h2 id="contents">Contents</h2>
+<p>The following suites exist in The Utopia Repository, but availability varies between OS versions. <b>Please check which sections suit your setup before adding things to sources.list!</b></p>
+
+<table id="legend-table">
+    <tr>
+        <th>Legend</th>
+    </tr>
+    <tr>
+        <td class="tablecell-yes">Fully supported</td>
+    </tr>
+    <tr>
+        <td class="tablecell-maintonly">Extended support: priority bug fixes only</td>
+    </tr>
+    <tr>
+        <td class="tablecell-partial">Partial or limited support (see notes)</td>
+    </tr>
+    <tr>
+        <td class="tablecell-eolsoon">Support ending soon</td>
+    </tr>
+    <tr>
+        <td class="tablecell-no">EOL or unsupported</td>
+    </tr>
+    <tr>
+        <td class="tablecell-planned">Planned/coming soon</td>
+    </tr>
+    <tr>
+        <td class="tablecell-special">Supported via an external repository</td>
+    <tr>
+        <td class="tablecell-na">Suite not available</td>
+    </tr>
+</table>
+<table>
+    <tr>
+        <th>Suite</th>
+        <th class="tablecell-yes">sid (unstable)</th>
+        <th class="tablecell-yes">buster (testing)</th>
+        <th class="tablecell-yes">stretch (stable)</th>
+        <th class="tablecell-no">jessie (oldstable)</th>
+        <th class="tablecell-yes">bionic (18.04)</th>
+        <th class="tablecell-eolsoon">xenial (16.04)</th>
+    </tr>
+
+    <tr>
+        <td style="width: 40%"><b>main</b>: Free software addons for Debian and Ubuntu. For stable releases, unofficial backports are also included. This section also includes Utopia-branded packages containing my desktop settings and custom package sets (<a href="https://github.com/utopia-repository/utopia-packages/blob/master/utopia-meta/debian/control">meta-packages</a>).</td>
+        <td class="tablecell-yes" colspan="2"><a href="sid_list.html"><b>sid/main</b></a></td>
+        <td class="tablecell-yes"><a href="stretch_list.html"><b>stretch/main</b></a></td>
+        <td class="tablecell-no">
+            <a href="jessie_list.html"><b>jessie/main</b></a>
+            <br>
+            <a href="jessie-backports_list.html"><b>jessie-backports/main</b></a>
+            <br>
+            [EOL 2018-02-28]
+        </td>
+        <td class="tablecell-yes"><a href="bionic_list.html"><b>bionic/main</b></a></td>
+        <td class="tablecell-eolsoon"><a href="xenial_list.html"><b>xenial/main</b></a>
+            <br>
+            [EOL 2018-08-06]
+        </td>
+    </tr>
+
+    <tr>
+        <td style="width: 40%"><b>imports</b>: Extra packages that are either mirrored from an external source or not supported well enough (by me) to put in main. This section also includes any contrib and non-free content.</td>
+        <td class="tablecell-partial" colspan="2"><a href="sid-imports_list.html"><b>sid/imports</b></a>†</td>
+        <td class="tablecell-partial"><a href="stretch-imports_list.html"><b>stretch/imports</b></a>†</td>
+        <td class="tablecell-no">
+            <a href="jessie-imports_list.html"><b>jessie/imports</b></a>
+            <br>
+            [EOL 2018-02-28]
+        </td>
+        <td class="tablecell-partial"><a href="bionic-imports_list.html"><b>bionic/imports</b></a>†</td>
+        <td class="tablecell-na">N/A</td>
+    </tr>
+
+    <tr>
+        <td style="width: 40%"><b>forks</b>: Forked / modified packages that intend to replace the versions available in Debian or Ubuntu.
+        Changes for each package vary - see their individual changelogs for more info.</td>
+        <td class="tablecell-yes" colspan="2"><a href="sid-forks_list.html"><b>sid/forks</b></a></td>
+        <td class="tablecell-yes"><a href="stretch-forks_list.html"><b>stretch/forks</b></a></td>
+        <td class="tablecell-na">N/A</td>
+        <td class="tablecell-yes"><a href="bionic-forks_list.html"><b>bionic/forks</b></a></td>
+        <td class="tablecell-na">N/A</td>
+    </tr>
+
+    <tr>
+        <td style="width: 40%"><b>nightlies</b>: <a href="https://github.com/utopia-repository/utopia-scripts/tree/master/autobuilder">Automatic nightly builds</a> for certain packages. Nightlies repositories are signed using a different PGP key: <a href="https://pgp.mit.edu/pks/lookup?op=vindex&search=0x4A8C96B8EEBB01E6">4A4A7B0E6EFB2FD90FD4F58C4A8C96B8EEBB01E6</a></td>
+        <td class="tablecell-yes" colspan="2"><a href="sid-nightlies_list.html"><b>sid-nightlies</b></a></td>
+        <td class="tablecell-yes"><a href="stretch-nightlies_list.html"><b>stretch-nightlies</b></a></td>
+        <td class="tablecell-no">
+            <a href="jessie-nightlies_list.html"><b>jessie-nightlies</b></a>
+            <br>
+            [EOL 2017-10-31]
+        </td>
+        <td class="tablecell-na">N/A</td>
+        <td class="tablecell-na">N/A</td>
+    </tr>
+
+</table>
+<p>* Not all packages are available (e.g. due to library mismatches)</p>
+<p>† Limited updates and support for <b>imports</b> suites</p>
+
+<h2 id="instructions">Instructions</h2>
+<p>This repository basically works like any other APT repository or Ubuntu PPA, and is signed using a PGP key. Both HTTP and signed HTTPS are available.</p>
+<h3>1) Add the repository to sources.list</h3>
+
+<div class="requiresjs">
+    <p>I am using <select id="os_selector" onchange="update_available_components()"></select> and would like the following dists:
+        <span id="component_selector">
+        </span>
+    </p>
+
+    <div id="https_transport_note" style="display:none"><em>Note:</em> Using HTTPS requires that the <b><a href="https://packages.debian.org/sid/apt-transport-https">apt-transport-https</a></b> package be installed.
+    </div>
+
+    <pre id="sources_list"></pre>
+</div>
+
+<noscript><p><em>Note:</em> Enable JavaScript for a friendly sources.list generator!</p>
+
+<pre>deb http://deb.utopia-repository.org/ <b>your-dist component1 component2 ...</b>
+deb-src http://deb.utopia-repository.org/ <b>your-dist component1 component2 ...</b></pre>
+</noscript>
+
+<h3>2) Install the repository's PGP signing key</h3>
+<pre>sudo apt-key adv --keyserver pool.sks-keyservers.net --recv-key D5D568B2D34AB32A337944D22EC3F60DE71C0B9D</pre>
+
+<h3>3) Install the utopia-keyring package (optional)</h3>
+<p>To keep the signing keys in sync via apt in case of updates, you can install the <b>utopia-keyring</b> package from the main section of most release repositories (e.g. <a href="sid_list.html">sid/main</a>).</p>
+
+<h3>4) Enjoy?!</h3>
+After adding the repositories of your choice, simply run <code>apt-get update</code> to update your repository cache. Then, you will be able to install packages whichever way you like. (apt-get, aptitude, synaptic, etc.)
+<h2 id="about">About</h2>
+<p>Why did I make this?</p>
+<ol>
+    <li><b>Simplicity.</b> Instead of adding 5 repositories for the things I commonly use, I only need to add 1.</li>
+    <li><b>Convenience.</b> This repository hosts a few meta-packages (utopia-* in main) to make it easier to pull in a working system. (forget selecting 30 individual packages!)</li>
+    <li><b>The learning experience.</b> This is pretty self-explanatory. :)</li>
+</ol>
+<h2 id="contact">Contact</h2>
+<p>Questions? Feedback? Concerns? Send me an e-mail at <a href="mailto:james@overdrivenetworks.com">james@overdrivenetworks.com</a></p>
+<p>Alternatively, you may file an issue against the <a href="https://github.com/utopia-repository/utopia-packages">utopia-packages GitHub repository</a>.</p>
+</body></html>

@@ -1,0 +1,152 @@
+/* Styles for packages.overdrivenetworks.com */
+body {
+    margin:1%;
+}
+
+/* Indented code blocks */
+pre {
+    background: linear-gradient(to bottom right, #DFDFDF, #F6F6F6);
+    background-color: #EEEEEE;
+    padding: 10px;
+    border: 2px solid;
+    border-radius: 10px;
+    margin: 0;
+    overflow: auto;
+}
+
+/* Headings */
+h1, h2 {
+    font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
+}
+
+h1 {
+    color: #353;
+    border-bottom: 1px solid #888;
+}
+
+h2 {
+    color: DarkSlateBlue;
+}
+
+/* (╮°-°)╮┳━┳ */
+table, th, td {
+    border: 1px solid black;
+}
+
+td, th {
+    text-align: center;
+    padding: 3px;
+}
+
+td:first-child {
+    text-align: left;
+}
+
+td > ul {
+    text-align: initial;
+}
+
+/* misc, decorative */
+
+.lead {
+    font-size: large;
+}
+
+#disclaimer {
+    font-variant: small-caps;
+    margin: 0;
+    font-size: x-large;
+    font-weight: bold;
+    color: maroon;
+}
+
+.expand {
+    display: block;
+    width: 100%;
+    padding-top: 1px;
+}
+
+/* Sorted tables decoration from http://www.kryogenix.org/code/browser/sorttable */
+
+table.sortable th:not(.sorttable_sorted):not(.sorttable_sorted_reverse):not(.sorttable_nosort):after {
+    content: " \25B4\25BE"
+}
+table.sortable thead {
+    cursor: default;
+}
+
+img.logo {
+    height: 1.5em;
+    vertical-align: bottom;
+    border-radius: 0.3em;
+    margin-right: 0.1em;
+}
+
+.tooltip {
+    border-bottom: 1px dotted #000;
+    cursor: pointer;
+}
+
+/* Dependency decoration in scripts */
+
+.dependency {
+    font-weight: bold;
+}
+
+.deptype-depends, .deptype-build-depends {
+    color: #c42b37
+}
+
+.deptype-recommends, .deptype-build-depends-indep {
+    color: #2356a8
+}
+
+.deptype-suggests {
+    color: #44ba32
+}
+
+.deptype-enhances {
+    color: #baa207
+}
+
+.deptype-provides {
+    color: #9006ba
+}
+
+/* Table cells */
+
+.tablecell-yes {
+    background-color: #A7F2A5
+}
+
+.tablecell-no {
+    background-color: #F08496
+}
+
+.tablecell-na {
+    background-color: #F0F0F0
+}
+
+.tablecell-planned {
+    background-color: #92E8DF
+}
+
+.tablecell-partial, .tablecell-limited {
+    background-color: #EDE8A4
+}
+
+.tablecell-special {
+    background-color: #DCB1FC
+}
+
+.tablecell-caveats, .tablecell-maintonly {
+    background-color: #F0C884
+}
+
+.tablecell-caveats2, .tablecell-eolsoon {
+    background-color: #ED9A80
+}
+
+.tablecell-no-padding {
+    padding: initial;
+}

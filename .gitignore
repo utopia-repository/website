@@ -1,0 +1,16 @@
+# utopia-scripts
+*_list.html
+sndiff/
+
+# letsencrypt
+.well-known
+
+# don't commit the actual apt repository...
+pool/
+dists/
+*.key
+*.gpg
+
+# symlinks
+ubuntu
+debian
