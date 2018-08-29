@@ -57,8 +57,10 @@ var https_support = {
 }
 
 // Defines special release/suite combinations in the suite picker
-var special_cases = {'backports': '$current-backports main',
-                     'nightlies': '$current-nightlies main'}
+var special_cases = {'backports': base_url + ' $current-backports main',
+                     'nightlies': 'http://ni.deb.utopia-repository.org $current-nightlies main'}
+var special_cases_ssl = {'backports': ssl_url + ' $current-backports main',
+                         'nightlies': 'https://ni.deb.utopia-repository.org $current-nightlies main'}
 
 // Internal value: whether the SSL checkbox is selected.
 var use_ssl = false
@@ -91,7 +93,8 @@ function refresh_text() {
 
     // When use_ssl changes, show/hide the note about apt-transport-https being needed for HTTPS support
     note = document.getElementById('https_transport_note')
-    if (use_ssl == true && https_support[selected_os] != 0) {
+    should_show_ssl = use_ssl == true && https_support[selected_os] != 0
+    if (should_show_ssl) {
         real_base_url = ssl_url
 
         // Only show the apt-transport-https note if required.
@@ -110,9 +113,18 @@ function refresh_text() {
     // Find special cases, add their content, and remove it from the rest of the displayed dists.
     for (i = 0; i < selected_components.length; i++) {
         component = selected_components[i]
-        if (special_cases[component]) {
-            // XXX: pseudo-substitution is ugly; perhaps we should abstract this further
-            special_url = real_base_url + ' ' + special_cases[component].replace('$current', selected_os)
+        special_url = ''
+
+        if (should_show_ssl && special_cases_ssl[component]) {
+            special_url = special_cases_ssl[component]
+        } else {
+            special_url = special_cases[component]
+        }
+
+        if (special_url) {
+            // XXX: One day, template literals will be more elegant
+            special_url = special_url.replace('$current', selected_os)
+
             special_link = 'deb ' + special_url + '\ndeb-src ' + special_url + '\n'
             link += special_link
         } else {
