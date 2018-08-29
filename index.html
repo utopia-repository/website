@@ -20,10 +20,10 @@
 // Map which sections are available for each OS version
 var dists = {
     'sid': ['main', 'imports', 'forks', 'nightlies'],
-    'stretch': ['main', 'nightlies', 'imports', 'forks', 'rlw'],
-    'jessie': ['main', 'backports', 'nightlies', 'imports', 'rlw'],
+    'stretch': ['main', 'nightlies', 'imports', 'forks'],
+    'jessie': ['main', 'backports', 'nightlies', 'imports'],
     'bionic': ['main', 'imports', 'forks'],
-    'xenial': ['main', 'rlw']
+    'xenial': ['main']
 }
 
 // Map distro codenames to display name
@@ -36,9 +36,7 @@ var displayed_names = {
 }
 
 // Display links for certain sections
-var section_links = {
-    'rlw': 'https://github.com/roblox-linux-wrapper/roblox-linux-wrapper'
-}
+var section_links = {}
 
 // Default OS version, components, and repository URL
 var selected_os = 'sid'
@@ -59,8 +57,7 @@ var https_support = {
 }
 
 // Defines special release/suite combinations in the suite picker
-var special_cases = {'rlw': 'rlw main',
-                     'backports': '$current-backports main',
+var special_cases = {'backports': '$current-backports main',
                      'nightlies': '$current-nightlies main'}
 
 // Internal value: whether the SSL checkbox is selected.
