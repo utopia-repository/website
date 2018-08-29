@@ -89,9 +89,10 @@ function refresh_text() {
     console.log("Selected components " + selected_components)
 
     displayed_components = []
-    link = ''
+    output = ''
 
     // When use_ssl changes, show/hide the note about apt-transport-https being needed for HTTPS support
+    // as needed
     note = document.getElementById('https_transport_note')
     should_show_ssl = use_ssl == true && https_support[selected_os] != 0
     if (should_show_ssl) {
@@ -110,7 +111,7 @@ function refresh_text() {
 
     console.log(real_base_url)
 
-    // Find special cases, add their content, and remove it from the rest of the displayed dists.
+    // Add each dist as either a special case or component
     for (i = 0; i < selected_components.length; i++) {
         component = selected_components[i]
         special_url = ''
@@ -125,8 +126,7 @@ function refresh_text() {
             // XXX: One day, template literals will be more elegant
             special_url = special_url.replace('$current', selected_os)
 
-            special_link = 'deb ' + special_url + '\ndeb-src ' + special_url + '\n'
-            link += special_link
+            output += ('deb ' + special_url + '\ndeb-src ' + special_url + '\n')
         } else {
             displayed_components.push(component)
         }
@@ -135,10 +135,10 @@ function refresh_text() {
     if (displayed_components.length > 0) {
         // Write both deb (binary) and deb-src (source) links.
         url = real_base_url + ' ' + selected_os + ' ' + displayed_components.join(' ')
-        link += 'deb ' + url + '\ndeb-src ' + url
+        output += 'deb ' + url + '\ndeb-src ' + url
     }
 
-    document.getElementById('sources_list').innerHTML = link
+    document.getElementById('sources_list').innerHTML = output
 }
 
 function update_selected_components() {
