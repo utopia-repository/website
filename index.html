@@ -248,13 +248,13 @@ function update_available_components() {
         <th>Legend</th>
     </tr>
     <tr>
-        <td class="tablecell-yes">Actively maintained</td>
+        <td class="tablecell-yes">Active maintenance</td>
     </tr>
     <tr>
         <td class="tablecell-maintonly">Extended bug fixes only</td>
     </tr>
     <tr>
-        <td class="tablecell-partial">Partial support (see notes)</td>
+        <td class="tablecell-partial">Some feature updates</td>
     </tr>
     <tr>
         <td class="tablecell-no">EOL or unsupported</td>
@@ -296,14 +296,14 @@ function update_available_components() {
 
     <tr>
         <td style="width: 40%"><b>imports</b>: Extra packages that are either mirrored from an external source or not supported well enough (by me) to put in main. This section also includes any contrib and non-free content.</td>
-        <td class="tablecell-partial" colspan="2"><a href="sid-imports_list.html"><b>sid/imports</b></a>†</td>
+        <td class="tablecell-yes" colspan="2"><a href="sid-imports_list.html"><b>sid/imports</b></a>†</td>
         <td class="tablecell-partial"><a href="stretch-imports_list.html"><b>stretch/imports</b></a>†</td>
         <td class="tablecell-no">
             <a href="jessie-imports_list.html"><b>jessie/imports</b></a>
             <br>
             [EOL 2018-02-28]
         </td>
-        <td class="tablecell-partial"><a href="bionic-imports_list.html"><b>bionic/imports</b></a>†</td>
+        <td class="tablecell-maintonly"><a href="bionic-imports_list.html"><b>bionic/imports</b></a>†</td>
         <td class="tablecell-na">N/A</td>
     </tr>
 
@@ -338,8 +338,7 @@ function update_available_components() {
     </tr>
 
 </table>
-<p>* Not all packages are available (e.g. due to library mismatches)</p>
-<p>† Limited updates and support for <b>imports</b> suites</p>
+<p>† Limited support for <b>imports</b> suites</p>
 
 <h2 id="instructions">Instructions</h2>
 <p>This repository works like any other APT repository or Ubuntu PPA, and is signed using a PGP key. Both HTTP and verified HTTPS are available.</p>
