@@ -19,7 +19,7 @@
 <script>
 // Map which sections are available for each OS version
 var dists = {
-    'sid': ['main', 'imports', 'forks', 'nightlies'],
+    'sid': ['main', 'imports', 'forks', 'nightlies', 'experimental'],
     'stretch': ['main', 'nightlies', 'imports', 'forks'],
     'jessie': ['main', 'backports', 'nightlies', 'imports'],
     'bionic': ['main', 'imports', 'forks'],
@@ -58,9 +58,11 @@ var https_support = {
 
 // Defines special release/suite combinations in the suite picker
 var special_cases = {'backports': base_url + ' $current-backports main',
-                     'nightlies': 'http://ni.deb.utopia-repository.org $current-nightlies main'}
+                     'nightlies': 'http://ni.deb.utopia-repository.org $current-nightlies main',
+                     'experimental': base_url + ' experimental main'}
 var special_cases_ssl = {'backports': ssl_url + ' $current-backports main',
-                         'nightlies': 'https://ni.deb.utopia-repository.org $current-nightlies main'}
+                         'nightlies': 'https://ni.deb.utopia-repository.org $current-nightlies main',
+                         'experimental': ssl_url + ' experimental main'}
 
 // Internal value: whether the SSL checkbox is selected.
 var use_ssl = false
