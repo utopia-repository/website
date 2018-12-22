@@ -20,7 +20,7 @@
 // Map which sections are available for each OS version
 var dists = {
     'sid': ['main', 'imports', 'forks', 'nightlies', 'experimental'],
-    'stretch': ['main', 'nightlies', 'imports', 'forks'],
+    'stretch': ['main', 'imports', 'nightlies', 'forks'],
     'jessie': ['main', 'backports', 'nightlies', 'imports'],
     'bionic': ['main', 'imports', 'forks'],
     'xenial': ['main']
@@ -145,7 +145,8 @@ function refresh_text() {
     if (displayed_components.length > 0) {
         // Write both deb (binary) and deb-src (source) links.
         url = real_base_url + ' ' + selected_os + ' ' + displayed_components.join(' ')
-        output += 'deb ' + url + '\ndeb-src ' + url
+        // Add the primary sections first
+        output = 'deb ' + url + '\ndeb-src ' + url + '\n' + output
     }
 
     document.getElementById('sources_list').innerHTML = output
