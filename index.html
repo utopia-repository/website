@@ -43,9 +43,6 @@ var selected_os = 'sid'
 var selected_components = ['main']
 var base_url = 'http://deb.utopia-repository.org/'
 
-// Sets the HTTPS URL for the repository. Leave blank to disable.
-var ssl_url = 'https://deb.utopia-repository.org/'
-
 // Defines which OS versions support HTTPS, and whether apt-transport-https is required for this.
 // 0: no HTTPS support, 1: requires apt-transport-https, 2: native support.
 var https_support = {
@@ -60,9 +57,6 @@ var https_support = {
 var special_cases = {'backports': base_url + ' $current-backports main',
                      'nightlies': 'http://ni.deb.utopia-repository.org $current-nightlies main',
                      'experimental': base_url + ' experimental main'}
-var special_cases_ssl = {'backports': ssl_url + ' $current-backports main',
-                         'nightlies': 'https://ni.deb.utopia-repository.org $current-nightlies main',
-                         'experimental': ssl_url + ' experimental main'}
 
 // Internal value: whether the SSL checkbox is selected.
 var use_ssl = false
@@ -86,6 +80,14 @@ function init() {
     update_available_components()
 }
 
+function _ssl_link(url) {
+    var http_prefix = "http://"
+    if (url && url.lastIndexOf(http_prefix, 0) === 0) {
+        return "https://" + url.substring(http_prefix.length);
+    }
+    return url;  // unknown
+}
+
 function refresh_text() {
     console.log("Selected distribution " + selected_os)
     console.log("Selected components " + selected_components)
@@ -96,9 +98,10 @@ function refresh_text() {
     // When use_ssl changes, show/hide the note about apt-transport-https being needed for HTTPS support
     // as needed
     note = document.getElementById('https_transport_note')
-    should_show_ssl = use_ssl == true && https_support[selected_os] != 0
+    should_show_ssl = use_ssl && https_support[selected_os] != 0
+
     if (should_show_ssl) {
-        real_base_url = ssl_url
+        real_base_url = _ssl_link(base_url)
 
         // Only show the apt-transport-https note if required.
         if (https_support[selected_os] == 1) {
@@ -116,12 +119,10 @@ function refresh_text() {
     // Add each dist as either a special case or component
     for (i = 0; i < selected_components.length; i++) {
         component = selected_components[i]
-        special_url = ''
+        special_url = special_cases[component]
 
-        if (should_show_ssl && special_cases_ssl[component]) {
-            special_url = special_cases_ssl[component]
-        } else {
-            special_url = special_cases[component]
+        if (should_show_ssl) {
+            special_url = _ssl_link(special_url)
         }
 
         if (special_url) {
@@ -201,7 +202,7 @@ function update_available_components() {
         component_selector.appendChild(caption)
     }
 
-    if (ssl_url != '' && https_support[selected_os] != 0) {
+    if (https_support[selected_os] != 0) {
         // Add an option to toggle SSL on or off, if supported.
         sslvar_text = "Use HTTPS?"
         checkbox = document.createElement('input')
