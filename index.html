@@ -40,8 +40,15 @@ var section_links = {}
 
 // Default OS version, components, and repository URL
 var selected_os = 'sid'
-var selected_components = ['main']
-var base_url = 'http://deb.utopia-repository.org/'
+var selected_compnents = ['main']
+
+var base_url
+// Mirror support
+if (window.location.hostname.endsWith('.utopia-repository.org')) {
+    base_url = 'http://' + window.location.hostname + '/'
+} else {
+    base_url = 'http://deb.utopia-repository.org/'
+}
 
 // Defines which OS versions support HTTPS, and whether apt-transport-https is required for this.
 // 0: no HTTPS support, 1: requires apt-transport-https, 2: native support.
@@ -82,7 +89,7 @@ function init() {
 
 function _ssl_link(url) {
     var http_prefix = "http://"
-    if (url && url.lastIndexOf(http_prefix, 0) === 0) {
+    if (url && url.startsWith(http_prefix)) {
         return "https://" + url.substring(http_prefix.length);
     }
     return url;  // unknown
