@@ -284,40 +284,21 @@ function update_available_components() {
         <th class="tablecell-yes">sid (unstable)</th>
         <th class="tablecell-yes">buster (testing)</th>
         <th class="tablecell-yes">stretch (stable)</th>
-        <th class="tablecell-no">jessie (oldstable)</th>
         <th class="tablecell-partial">bionic (18.04)</th>
-        <th class="tablecell-no">xenial (16.04)</th>
     </tr>
 
     <tr>
         <td style="width: 40%"><b>main</b>: Free software addons for Debian and Ubuntu. For stable releases, unofficial backports are also included. This section also includes Utopia-branded packages containing my desktop settings and custom package sets (<a href="https://github.com/utopia-repository/utopia-packages/blob/master/utopia-meta/debian/control">meta-packages</a>).</td>
         <td class="tablecell-yes" colspan="2"><a href="sid_list.html"><b>sid/main</b></a></td>
         <td class="tablecell-yes"><a href="stretch_list.html"><b>stretch/main</b></a></td>
-        <td class="tablecell-no">
-            <a href="jessie_list.html"><b>jessie/main</b></a>
-            <br>
-            <a href="jessie-backports_list.html"><b>jessie-backports/main</b></a>
-            <br>
-            [EOL 2018-02-28]
-        </td>
         <td class="tablecell-partial"><a href="bionic_list.html"><b>bionic/main</b></a></td>
-        <td class="tablecell-no"><a href="xenial_list.html"><b>xenial/main</b></a>
-            <br>
-            [EOL 2018-08-06]
-        </td>
     </tr>
 
     <tr>
         <td style="width: 40%"><b>imports</b>: Extra packages that are either mirrored from an external source or not supported well enough (by me) to put in main. This section also includes any contrib and non-free content.</td>
         <td class="tablecell-yes" colspan="2"><a href="sid-extras_list.html"><b>sid/imports</b></a>†</td>
         <td class="tablecell-partial"><a href="stretch-imports_list.html"><b>stretch/imports</b></a>†</td>
-        <td class="tablecell-no">
-            <a href="jessie-imports_list.html"><b>jessie/imports</b></a>
-            <br>
-            [EOL 2018-02-28]
-        </td>
         <td class="tablecell-maintonly"><a href="bionic-imports_list.html"><b>bionic/imports</b></a>†</td>
-        <td class="tablecell-na">N/A</td>
     </tr>
 
     <tr>
@@ -325,21 +306,13 @@ function update_available_components() {
         Changes for each package vary - see their individual changelogs for more info.</td>
         <td class="tablecell-yes" colspan="2"><a href="sid-forks_list.html"><b>sid/forks</b></a></td>
         <td class="tablecell-yes"><a href="stretch-forks_list.html"><b>stretch/forks</b></a></td>
-        <td class="tablecell-na">N/A</td>
         <td class="tablecell-partial"><a href="bionic-forks_list.html"><b>bionic/forks</b></a></td>
-        <td class="tablecell-na">N/A</td>
     </tr>
 
     <tr>
         <td style="width: 40%"><b>nightlies</b>: <a href="https://github.com/utopia-repository/utopia-scripts/tree/master/autobuilder">Automatic nightly builds</a> for certain packages. Nightlies repositories are signed using a different PGP key: <a href="https://pgp.mit.edu/pks/lookup?op=vindex&search=0x4A8C96B8EEBB01E6">4A4A7B0E6EFB2FD90FD4F58C4A8C96B8EEBB01E6</a></td>
         <td class="tablecell-yes" colspan="2"><a href="//ni.deb.utopia-repository.org/sid-nightlies_list.html"><b>sid-nightlies</b></a></td>
         <td class="tablecell-yes"><a href="//ni.deb.utopia-repository.org/stretch-nightlies_list.html"><b>stretch-nightlies</b></a></td>
-        <td class="tablecell-no">
-            <a href="jessie-nightlies_list.html"><b>jessie-nightlies</b></a>
-            <br>
-            [EOL 2017-10-31]
-        </td>
-        <td class="tablecell-na">N/A</td>
         <td class="tablecell-na">N/A</td>
     </tr>
 
@@ -347,7 +320,7 @@ function update_available_components() {
         <td style="width: 40%"><b>experimental</b>: Bleeding edge &amp; testing packages that <i>may upgrade system libraries</i> and thus cause package conflicts.
         Use with caution!</td>
         <td class="tablecell-yes"><a href="experimental_list.html"><b>experimental</b></a></td>
-        <td class="tablecell-na" colspan="5">N/A</td>
+        <td class="tablecell-na" colspan="3">N/A</td>
     </tr>
 
 </table>
