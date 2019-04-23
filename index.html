@@ -21,18 +21,14 @@
 var dists = {
     'sid': ['main', 'imports', 'forks', 'nightlies', 'experimental'],
     'stretch': ['main', 'imports', 'nightlies', 'forks'],
-    'jessie': ['main', 'backports', 'nightlies', 'imports'],
-    'bionic': ['main', 'imports', 'forks'],
-    'xenial': ['main']
+    'bionic': ['main', 'imports', 'forks']
 }
 
 // Map distro codenames to display name
 var displayed_names = {
     'sid': 'Debian Testing/Unstable (buster/sid)',
     'stretch': 'Debian 9 (stretch)',
-    'jessie': 'Debian 8 (jessie)',
-    'bionic': 'Ubuntu 18.04 LTS (bionic)',
-    'xenial': 'Ubuntu 16.04 LTS (xenial)'
+    'bionic': 'Ubuntu 18.04 LTS (bionic)'
 }
 
 // Display links for certain sections
@@ -55,9 +51,7 @@ if (window.location.hostname.endsWith('.utopia-repository.org')) {
 var https_support = {
     'sid': 2,
     'stretch': 1,
-    'jessie': 1,
-    'bionic': 2,
-    'xenial': 1
+    'bionic': 2
 }
 
 // Defines special release/suite combinations in the suite picker
