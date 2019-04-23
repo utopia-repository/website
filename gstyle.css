@@ -139,14 +139,6 @@ img.logo {
     background-color: #DCB1FC
 }
 
-.tablecell-caveats, .tablecell-maintonly {
-    background-color: #F0C884
-}
-
-.tablecell-caveats2, .tablecell-eolsoon {
-    background-color: #ED9A80
-}
-
 .tablecell-no-padding {
     padding: initial;
 }
