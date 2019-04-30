@@ -60,6 +60,10 @@ td > ul {
     color: maroon;
 }
 
+.small {
+    font-size: small;
+}
+
 .expand {
     display: block;
     width: 100%;
