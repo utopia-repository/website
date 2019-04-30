@@ -234,12 +234,13 @@ function update_available_components() {
 
 <div class="lead">
     <p>View the repo in your browser: <a href="dists/">dists/</a> <a href="pool/">pool/</a></p>
-    <p><b>The Utopia Repository</b> is <a href="https://qa.debian.org/developer.php?login=James+Lu">James Lu</a>'s personal APT repository for Debian and Ubuntu. Supported architectures include amd64 (primary target), i386, and arm64.</p>
-    <p id="disclaimer">Absolutely no warranty is provided for the use of any software in this repository; use at your own risk!<br>All credit goes out to the software's original developers.</p>
+    <p><b>The Utopia Repository</b> is an addons repository for Debian and Ubuntu, administered by <a href="https://qa.debian.org/developer.php?login=James+Lu">James Lu</a>. Supported architectures include amd64 (primary target), i386, armhf, and arm64.</p>
+    <p id="disclaimer">Absolutely no warranty is provided for the use of any software in this repository; use at your own risk!</p>
 </div>
 
 <h2 id="news">News</h2>
 <ul class="lead">
+    <li><b>2019-04-30</b>: KEY TRANSITION - All repository updates going forward will now be signed with the Utopia Repository Automatic Signing Key (<a href="https://keyserver.ubuntu.com/pks/lookup?search=0x4A4A7B0E6EFB2FD90FD4F58C4A8C96B8EEBB01E6&op=vindex">4A4A7B0E6EFB2FD90FD4F58C4A8C96B8EEBB01E6</a>). This is the same key that is currently used to provide nightly builds.</li>
     <li><b>2018-12-22</b>:
         A new mirror is available (Europe) at <a href="//deb2.utopia-repository.org">deb2.utopia-repository.org</a>, serving all suites except nightlies. The main server (USA) remains at <a href="//deb.utopia-repository.org">deb.utopia-repository.org</a>
     <li><b>2018-08-18</b>:
@@ -301,7 +302,7 @@ function update_available_components() {
     </tr>
 
     <tr>
-        <td style="width: 40%"><b>nightlies</b>: <a href="https://github.com/utopia-repository/utopia-scripts/tree/master/autobuilder">Automatic nightly builds</a> for certain packages. Nightlies repositories are signed using a different PGP key: <a href="https://pgp.mit.edu/pks/lookup?op=vindex&search=0x4A8C96B8EEBB01E6">4A4A7B0E6EFB2FD90FD4F58C4A8C96B8EEBB01E6</a></td>
+        <td style="width: 40%"><b>nightlies</b>: <a href="https://github.com/utopia-repository/utopia-scripts/tree/master/autobuilder">Automatic nightly builds</a> by the Utopia Repository team.</td>
         <td class="tablecell-yes" colspan="2"><a href="//ni.deb.utopia-repository.org/sid-nightlies_list.html"><b>sid-nightlies</b></a></td>
         <td class="tablecell-yes"><a href="//ni.deb.utopia-repository.org/stretch-nightlies_list.html"><b>stretch-nightlies</b></a></td>
         <td class="tablecell-na">N/A</td>
@@ -340,7 +341,7 @@ deb-src http://deb.utopia-repository.org/ <b>your-dist component1 component2 ...
 </noscript>
 
 <h3>2) Install the repository's PGP signing key</h3>
-<pre>sudo apt-key adv --keyserver pool.sks-keyservers.net --recv-key D5D568B2D34AB32A337944D22EC3F60DE71C0B9D</pre>
+<pre>sudo apt-key adv --keyserver pool.sks-keyservers.net --recv-key 4A4A7B0E6EFB2FD90FD4F58C4A8C96B8EEBB01E6</pre>
 
 <h3>3) Install the utopia-keyring package (optional)</h3>
 <p>To keep the signing keys in sync via apt in case of updates, you can install the <b>utopia-keyring</b> package from the main section of most release repositories (e.g. <a href="sid_list.html">sid/main</a>).</p>
