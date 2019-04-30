@@ -52,7 +52,7 @@ td > ul {
     font-size: large;
 }
 
-#disclaimer {
+.disclaimer {
     font-variant: small-caps;
     margin: 0;
     font-size: x-large;
