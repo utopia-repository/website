@@ -20,13 +20,15 @@
 // Map which sections are available for each OS version
 var dists = {
     'sid': ['main', 'imports', 'forks', 'nightlies', 'experimental'],
+    'buster': ['main', 'imports', 'nightlies', 'forks'],
     'stretch': ['main', 'imports', 'nightlies', 'forks'],
     'bionic': ['main', 'imports', 'forks']
 }
 
 // Map distro codenames to display name
 var displayed_names = {
-    'sid': 'Debian Testing/Unstable (buster/sid)',
+    'sid': 'Debian Testing/Unstable (bullseye/sid)',
+    'buster': 'Debian 10 (buster)',
     'stretch': 'Debian 9 (stretch)',
     'bionic': 'Ubuntu 18.04 LTS (bionic)'
 }
@@ -274,8 +276,9 @@ function update_available_components() {
     <tr>
         <th>Suite</th>
         <th class="tablecell-yes">sid (unstable)</th>
-        <th class="tablecell-yes">buster (testing)</th>
-        <th class="tablecell-yes">stretch (stable)</th>
+        <th class="tablecell-yes">bullseye (testing)</th>
+        <th class="tablecell-yes">buster (stable)</th>
+        <th class="tablecell-partial">stretch (oldstable)</th>
         <th class="tablecell-partial">bionic (18.04)</th>
     </tr>
 
@@ -286,7 +289,8 @@ function update_available_components() {
             <br>
             <span class="small">QA: <a href="//qa.deb.utopia-repository.org/sid_uscan.html">Watch</a></span>
         </td>
-        <td class="tablecell-yes"><a href="stretch_list.html"><b>stretch/main</b></a></td>
+        <td class="tablecell-yes"><a href="buster_list.html"><b>buster/main</b></a></td>
+        <td class="tablecell-partial"><a href="stretch_list.html"><b>stretch/main</b></a></td>
         <td class="tablecell-partial"><a href="bionic_list.html"><b>bionic/main</b></a></td>
     </tr>
 
@@ -297,6 +301,7 @@ function update_available_components() {
             <br>
             <span class="small">QA: <a href="//qa.deb.utopia-repository.org/sid-extras_uscan.html">Watch</a></span>
         </td>
+        <td class="tablecell-partial"><a href="buster-imports_list.html"><b>buster/imports</b></a>†</td>
         <td class="tablecell-partial"><a href="stretch-imports_list.html"><b>stretch/imports</b></a>†</td>
         <td class="tablecell-partial"><a href="bionic-imports_list.html"><b>bionic/imports</b></a>†</td>
     </tr>
@@ -309,13 +314,19 @@ function update_available_components() {
             <br>
             <span class="small">QA: <a href="//qa.deb.utopia-repository.org/sid-forks_uscan.html">Watch</a></span>
         </td>
-        <td class="tablecell-yes"><a href="stretch-forks_list.html"><b>stretch/forks</b></a></td>
+        <td class="tablecell-yes"><a href="buster-forks_list.html"><b>buster/forks</b></a></td>
+        <td class="tablecell-partial"><a href="stretch-forks_list.html"><b>stretch/forks</b></a></td>
         <td class="tablecell-partial"><a href="bionic-forks_list.html"><b>bionic/forks</b></a></td>
     </tr>
 
     <tr>
         <td style="width: 40%"><b>nightlies</b>: <a href="https://github.com/utopia-repository/utopia-scripts/tree/master/autobuilder">Automatic nightly builds</a> by the Utopia Repository team.</td>
         <td class="tablecell-yes" colspan="2"><a href="//ni.deb.utopia-repository.org/sid-nightlies_list.html"><b>sid-nightlies</b></a></td>
+        <td class="tablecell-planned">
+            <!--<a href="//ni.deb.utopia-repository.org/buster-nightlies_list.html"><b>buster-nightlies</b></a>-->
+            <b>buster-nightlies</b>
+            <br>
+            Coming soon</td>
         <td class="tablecell-yes"><a href="//ni.deb.utopia-repository.org/stretch-nightlies_list.html"><b>stretch-nightlies</b></a></td>
         <td class="tablecell-na">N/A</td>
     </tr>
