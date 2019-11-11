@@ -18,7 +18,7 @@
 
 <script>
 // Map which sections are available for each OS version
-var dists = {
+const SUPPORTED_RELEASES = {
     'sid': ['main', 'imports', 'forks', 'nightlies', 'experimental'],
     'buster': ['main', 'imports', 'nightlies', 'forks'],
     'stretch': ['main', 'imports', 'nightlies', 'forks'],
@@ -26,46 +26,46 @@ var dists = {
 }
 
 // Map distro codenames to display name
-var displayed_names = {
+const RELEASE_NAMES = {
     'sid': 'Debian Testing/Unstable (bullseye/sid)',
     'buster': 'Debian 10 (buster)',
     'stretch': 'Debian 9 (stretch)',
     'bionic': 'Ubuntu 18.04 LTS (bionic)'
 }
 
+// Hack for mirror support
+var BASE_URL;
+if (window.location.hostname.endsWith('.utopia-repository.org')) {
+    BASE_URL = 'http://' + window.location.hostname + '/'
+} else {
+    BASE_URL = 'http://deb.utopia-repository.org/'
+}
+
+// Defines special release/suite combinations in the suite picker
+const SPECIAL_CASES = {'backports': BASE_URL + ' $current-backports main',
+                       'nightlies': 'http://ni.deb.utopia-repository.org $current-nightlies main',
+                       'experimental': BASE_URL + ' experimental main'}
+
 // Display links for certain sections
 var section_links = {}
 
 // Default OS version, components, and repository URL
 var selected_os = 'sid'
-var selected_compnents = ['main']
-
-var base_url
-// Mirror support
-if (window.location.hostname.endsWith('.utopia-repository.org')) {
-    base_url = 'http://' + window.location.hostname + '/'
-} else {
-    base_url = 'http://deb.utopia-repository.org/'
-}
-
-// Defines special release/suite combinations in the suite picker
-var special_cases = {'backports': base_url + ' $current-backports main',
-                     'nightlies': 'http://ni.deb.utopia-repository.org $current-nightlies main',
-                     'experimental': base_url + ' experimental main'}
+var selected_components = ['main']
 
 // Internal value: whether the SSL checkbox is selected.
 var use_ssl = false
 
 function init() {
-    // Populate the drop down list of displayed dists with the ones defined above.
+    // Populate the drop down list of displayed SUPPORTED_RELEASES with the ones defined above.
     os_selector = document.getElementById('os_selector')
 
-    for (dist in dists) {
+    for (dist in SUPPORTED_RELEASES) {
         option = document.createElement('option')
         option.value = dist
         // Prefer the display name for each distribution, unless it doesn't exist.
-        if (displayed_names[dist]) {
-            option.textContent = displayed_names[dist]
+        if (RELEASE_NAMES[dist]) {
+            option.textContent = RELEASE_NAMES[dist]
         } else {
             option.textContent = dist
         }
@@ -95,9 +95,9 @@ function refresh_text() {
     note = document.getElementById('https_transport_note')
 
     if (use_ssl) {
-        real_base_url = _ssl_link(base_url)
+        real_base_url = _ssl_link(BASE_URL)
     } else {
-        real_base_url = base_url
+        real_base_url = BASE_URL
         note.style = 'display:none;'
     }
 
@@ -106,7 +106,7 @@ function refresh_text() {
     // Add each dist as either a special case or component
     for (i = 0; i < selected_components.length; i++) {
         component = selected_components[i]
-        special_url = special_cases[component]
+        special_url = SPECIAL_CASES[component]
 
         if (use_ssl) {
             special_url = _ssl_link(special_url)
@@ -160,7 +160,7 @@ function update_available_components() {
     // Find the selected dist and populate a list of component choices
     // using that. Each choice is a check box.
     selected_os = os_selector.options[os_selector.selectedIndex].value
-    components = dists[selected_os]
+    components = SUPPORTED_RELEASES[selected_os]
 
     for (var i = 0; i < components.length; i++) {
         component = components[i]
@@ -328,7 +328,7 @@ function update_available_components() {
 <h3>1) Add the repository to sources.list</h3>
 
 <div class="requiresjs">
-    <p>I am using <select id="os_selector" onchange="update_available_components()"></select> and would like the following dists:
+    <p>I am using <select id="os_selector" onchange="update_available_components()"></select> and would like the following sections:
         <span id="component_selector">
         </span>
     </p>
