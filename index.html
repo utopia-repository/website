@@ -48,14 +48,6 @@ if (window.location.hostname.endsWith('.utopia-repository.org')) {
     base_url = 'http://deb.utopia-repository.org/'
 }
 
-// Defines which OS versions support HTTPS, and whether apt-transport-https is required for this.
-// 0: no HTTPS support, 1: requires apt-transport-https, 2: native support.
-var https_support = {
-    'sid': 2,
-    'stretch': 1,
-    'bionic': 2
-}
-
 // Defines special release/suite combinations in the suite picker
 var special_cases = {'backports': base_url + ' $current-backports main',
                      'nightlies': 'http://ni.deb.utopia-repository.org $current-nightlies main',
@@ -101,17 +93,9 @@ function refresh_text() {
     // When use_ssl changes, show/hide the note about apt-transport-https being needed for HTTPS support
     // as needed
     note = document.getElementById('https_transport_note')
-    should_show_ssl = use_ssl && https_support[selected_os] != 0
 
-    if (should_show_ssl) {
+    if (use_ssl) {
         real_base_url = _ssl_link(base_url)
-
-        // Only show the apt-transport-https note if required.
-        if (https_support[selected_os] == 1) {
-            note.style = ''
-        } else {
-            note.style = 'display:none;'
-        }
     } else {
         real_base_url = base_url
         note.style = 'display:none;'
@@ -124,7 +108,7 @@ function refresh_text() {
         component = selected_components[i]
         special_url = special_cases[component]
 
-        if (should_show_ssl) {
+        if (use_ssl) {
             special_url = _ssl_link(special_url)
         }
 
@@ -206,24 +190,22 @@ function update_available_components() {
         component_selector.appendChild(caption)
     }
 
-    if (https_support[selected_os] != 0) {
-        // Add an option to toggle SSL on or off, if supported.
-        sslvar_text = "Use HTTPS?"
-        checkbox = document.createElement('input')
-        checkbox.type = 'checkbox'
-        checkbox.value = sslvar_text
-        checkbox.id = 'sslcheckbox'
-        checkbox.checked = use_ssl // Restore the previous checked state
-        checkbox.onchange = function() {
-            use_ssl = document.getElementById('sslcheckbox').checked
-            console.log("use_ssl set to " + use_ssl)
-            refresh_text()
-        }
-        component_selector.appendChild(checkbox)
-
-        text = document.createTextNode(sslvar_text)
-        component_selector.appendChild(text)
+    // Add an option to toggle HTTPS on or off.
+    sslvar_text = "Use HTTPS?"
+    checkbox = document.createElement('input')
+    checkbox.type = 'checkbox'
+    checkbox.value = sslvar_text
+    checkbox.id = 'sslcheckbox'
+    checkbox.checked = use_ssl // Restore the previous checked state
+    checkbox.onchange = function() {
+        use_ssl = document.getElementById('sslcheckbox').checked
+        console.log("use_ssl set to " + use_ssl)
+        refresh_text()
     }
+    component_selector.appendChild(checkbox)
+
+    text = document.createTextNode(sslvar_text)
+    component_selector.appendChild(text)
 
     refresh_text()
 }
