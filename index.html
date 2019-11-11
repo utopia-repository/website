@@ -46,9 +46,6 @@ const SPECIAL_CASES = {'backports': BASE_URL + ' $current-backports main',
                        'nightlies': 'http://ni.deb.utopia-repository.org $current-nightlies main',
                        'experimental': BASE_URL + ' experimental main'}
 
-// Display links for certain sections
-var section_links = {}
-
 // Default OS version, components, and repository URL
 var selected_os = 'sid'
 var selected_components = ['main']
@@ -177,17 +174,8 @@ function update_available_components() {
         }
 
         component_selector.appendChild(checkbox)
-
-        // Also create the caption for each choice.
-        component_text = document.createTextNode(component)
-        if (section_links[component]) {
-            caption = document.createElement('a');
-            caption.href = section_links[component]
-            caption.appendChild(component_text);
-        } else {
-            caption = component_text
-        }
-        component_selector.appendChild(caption)
+        caption_node = document.createTextNode(component) // create a label for the check box
+        component_selector.appendChild(caption_node)
     }
 
     // Add an option to toggle HTTPS on or off.
