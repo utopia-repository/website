@@ -33,6 +33,10 @@ table, th, td {
     border: 1px solid black;
 }
 
+tr:target {
+    background-color: #ffc;
+}
+
 td, th {
     text-align: center;
     padding: 3px;
