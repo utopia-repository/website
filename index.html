@@ -87,15 +87,10 @@ function refresh_text() {
     displayed_components = []
     output = ''
 
-    // When use_ssl changes, show/hide the note about apt-transport-https being needed for HTTPS support
-    // as needed
-    note = document.getElementById('https_transport_note')
-
     if (use_ssl) {
         real_base_url = _ssl_link(BASE_URL)
     } else {
         real_base_url = BASE_URL
-        note.style = 'display:none;'
     }
 
     console.log(real_base_url)
@@ -314,9 +309,6 @@ function update_available_components() {
         <span id="component_selector">
         </span>
     </p>
-
-    <div id="https_transport_note" style="display:none"><em>Note:</em> Using HTTPS requires that the <b><a href="https://packages.debian.org/apt-transport-https">apt-transport-https</a></b> package be installed.
-    </div>
 
     <pre id="sources_list"></pre>
 </div>
