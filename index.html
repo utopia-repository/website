@@ -320,12 +320,14 @@ deb-src http://deb.utopia-repository.org/ <b>your-dist component1 component2 ...
 </noscript>
 
 <h3>2) Install the repository's PGP signing key</h3>
-<pre>sudo apt-key adv --keyserver pool.sks-keyservers.net --recv-key 4A4A7B0E6EFB2FD90FD4F58C4A8C96B8EEBB01E6</pre>
+<p>Download the <a href="https://deb.utopia-repository.org/keyring-latest.deb">utopia-keyring</a> package over HTTPS and install it locally:</p>
 
-<h3>3) Install the utopia-keyring package (optional)</h3>
-<p>To keep the signing keys in sync via apt in case of updates, you can install the <b>utopia-keyring</b> package from the main section of most release repositories (e.g. <a href="sid_list.html">sid/main</a>).</p>
+<pre>wget https://deb.utopia-repository.org/keyring-latest.deb
+sudo apt-get install ./keyring-latest.deb</pre>
 
-<h3>4) Enjoy?!</h3>
+Updates to the keyring set will be automatically applied afterwards.
+
+<h3>3) Enjoy?!</h3>
 After adding the repositories of your choice, simply run <code>apt-get update</code> to update your repository cache. Then, you will be able to install packages whichever way you like. (apt-get, aptitude, synaptic, etc.)
 <h2 id="about">About</h2>
 <p>Why did I make this?</p>
