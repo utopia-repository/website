@@ -33,6 +33,8 @@ const RELEASE_NAMES = {
     'bionic': 'Ubuntu 18.04 LTS (bionic)'
 }
 
+const SIGNED_BY = "[signed-by=/usr/share/keyrings/utopia-repository.asc] ";
+
 // Hack for mirror support
 var BASE_URL;
 if (window.location.hostname.endsWith('.utopia-repository.org')) {
@@ -108,7 +110,7 @@ function refresh_text() {
             // XXX: One day, template literals will be more elegant
             special_url = special_url.replace('$current', selected_os)
 
-            output += ('deb ' + special_url + '\ndeb-src ' + special_url + '\n')
+            output += ('deb ' + SIGNED_BY + special_url + '\ndeb-src ' + SIGNED_BY + special_url + '\n')
         } else {
             displayed_components.push(component)
         }
@@ -118,7 +120,7 @@ function refresh_text() {
         // Write both deb (binary) and deb-src (source) links.
         url = real_base_url + ' ' + selected_os + ' ' + displayed_components.join(' ')
         // Add the primary sections first
-        output = 'deb ' + url + '\ndeb-src ' + url + '\n' + output
+        output = 'deb ' + SIGNED_BY + url + '\ndeb-src ' + SIGNED_BY + url + '\n' + output
     }
 
     document.getElementById('sources_list').innerHTML = output
@@ -315,8 +317,8 @@ function update_available_components() {
 
 <noscript><p><em>Note:</em> Enable JavaScript for a friendly sources.list generator!</p>
 
-<pre>deb http://deb.utopia-repository.org/ <b>your-dist component1 component2 ...</b>
-deb-src http://deb.utopia-repository.org/ <b>your-dist component1 component2 ...</b></pre>
+<pre>deb [signed-by=/usr/share/keyrings/utopia-repository.asc] http://deb.utopia-repository.org/ <b>your-dist component1 component2 ...</b>
+deb-src [signed-by=/usr/share/keyrings/utopia-repository.asc] http://deb.utopia-repository.org/ <b>your-dist component1 component2 ...</b></pre>
 </noscript>
 
 <h3>2) Install the repository's PGP signing key</h3>
@@ -325,10 +327,11 @@ deb-src http://deb.utopia-repository.org/ <b>your-dist component1 component2 ...
 <pre>wget https://deb.utopia-repository.org/keyring-latest.deb
 sudo apt-get install ./keyring-latest.deb</pre>
 
-Updates to the keyring set will be automatically applied afterwards.
+<p>Updates to the keyring set will be automatically applied afterwards.</p>
 
 <h3>3) Enjoy?!</h3>
-After adding the repositories of your choice, simply run <code>apt-get update</code> to update your repository cache. Then, you will be able to install packages whichever way you like. (apt-get, aptitude, synaptic, etc.)
+<p>After adding the repositories of your choice, simply run <code>apt-get update</code> to update your repository cache. Then, you will be able to install packages whichever way you like. (apt-get, aptitude, synaptic, etc.)</p>
+
 <h2 id="about">About</h2>
 <p>Why did I make this?</p>
 <ol>
