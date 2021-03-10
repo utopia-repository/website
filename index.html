@@ -19,18 +19,14 @@
 <script>
 // Map which sections are available for each OS version
 const SUPPORTED_RELEASES = {
-    'sid': ['main', 'imports', 'nightlies', 'experimental'],
-    'buster': ['main', 'imports', 'nightlies', 'forks'],
-    'stretch': ['main', 'imports', 'nightlies', 'forks'],
-    'bionic': ['main', 'imports', 'forks']
+    'sid': ['main', 'imports', 'meta', 'nightlies', 'experimental'],
+    'buster': ['main', 'imports', 'nightlies', 'forks']
 }
 
 // Map distro codenames to display name
 const RELEASE_NAMES = {
     'sid': 'Debian Testing/Unstable (bullseye/sid)',
-    'buster': 'Debian 10 (buster)',
-    'stretch': 'Debian 9 (stretch)',
-    'bionic': 'Ubuntu 18.04 LTS (bionic)'
+    'buster': 'Debian 10 (buster)'
 }
 
 const SIGNED_BY = "[signed-by=/usr/share/keyrings/utopia-repository.asc] ";
@@ -203,15 +199,16 @@ function update_available_components() {
 
 <div class="lead">
     <p>View the repo in your browser: <a href="dists/">dists/</a> <a href="pool/">pool/</a></p>
-    <p><b>The Utopia Repository</b> is an addons repository for Debian and Ubuntu, administered by <a href="https://qa.debian.org/developer.php?login=James+Lu">James Lu</a>. Supported architectures include amd64 (primary target), i386, armhf, and arm64.</p>
+    <p><b>The Utopia Repository</b> is an addons repository for Debian, administered by <a href="https://qa.debian.org/developer.php?login=James+Lu">James Lu</a>. Supported architectures include amd64 (primary target), i386, armhf, and arm64.</p>
     <p class="disclaimer">Absolutely no warranty is provided for the software in this repository; use at your own risk!</p>
 </div>
 
 <h2 id="news">News</h2>
 <ul class="lead">
+    <li><b>2021-02-12</b>: stretch and bionic have been dropped. <b>sid/main</b> has been split into two new sections: <b>newlibs</b> (replacing forks for bullseye) and <b>meta</b> (new home for meta-packages).</li>
     <li><b>2019-04-30</b>: KEY TRANSITION - All repository updates going forward will now be signed with the Utopia Repository Automatic Signing Key (<a href="https://keyserver.ubuntu.com/pks/lookup?search=0x4A4A7B0E6EFB2FD90FD4F58C4A8C96B8EEBB01E6&op=vindex">4A4A7B0E6EFB2FD90FD4F58C4A8C96B8EEBB01E6</a>). This is the same key that is currently used to provide nightly builds.</li>
-    <li><b>2018-12-22</b>:
-        A new mirror is available (Europe) at <a href="//deb2.utopia-repository.org">deb2.utopia-repository.org</a>, serving all suites except nightlies. The main server (USA) remains at <a href="//deb.utopia-repository.org">deb.utopia-repository.org</a>
+    <li><strike><b>2018-12-22</b>:
+        A new mirror is available (Europe) at <a href="//deb2.utopia-repository.org">deb2.utopia-repository.org</a>, serving all suites except nightlies. The main server (USA) remains at <a href="//deb.utopia-repository.org">deb.utopia-repository.org</a></strike>
     <li><b>2018-08-18</b>:
         The Utopia Repository moves to a new address: <b>deb.utopia-repository.org</b><br>
         Nightly builds will now be served from: <b>ni.deb.utopia-repository.org</b>
@@ -246,64 +243,57 @@ function update_available_components() {
         <th class="tablecell-yes">sid (unstable)</th>
         <th class="tablecell-yes">bullseye (testing)</th>
         <th class="tablecell-yes">buster (stable)</th>
-        <th class="tablecell-partial">stretch (oldstable)</th>
-        <th class="tablecell-partial">bionic (18.04)</th>
     </tr>
 
     <tr>
-        <td style="width: 40%"><b>main</b>: Free software addons for Debian and Ubuntu. For stable releases, unofficial backports are also included. This section also includes Utopia-branded packages containing my desktop settings and custom package sets (<a href="https://github.com/utopia-repository/utopia-packages/blob/master/utopia-meta/debian/control">meta-packages</a>).</td>
+        <td style="width: 40%"><b>main</b>: Free software addons for Debian. For stable releases, this may also include unofficial backports for certain packages.</td>
         <td class="tablecell-yes" colspan="2">
             <a href="sid_main_list.html"><b>sid/main</b></a>
         </td>
-        <td class="tablecell-yes"><a href="buster_main_list.html"><b>buster/main</b></a></td>
-        <td class="tablecell-partial"><a href="stretch_main_list.html"><b>stretch/main</b></a></td>
-        <td class="tablecell-partial"><a href="bionic_main_list.html"><b>bionic/main</b></a></td>
+        <td class="tablecell-yes" rowspan="2"><a href="buster_main_list.html"><b>buster/main</b></a></td>
     </tr>
 
     <tr>
-        <td style="width: 40%"><b>imports</b>: Extra packages that are either mirrored from an external source or not supported well enough (by me) to put in main. May include non-free content.</td>
+        <td style="width: 40%"><b>meta</b>: This section contains Utopia-branded packages which ship my desktop settings and custom package sets (<a href="https://github.com/utopia-repository/utopia-packages">source</a>).</td>
         <td class="tablecell-yes" colspan="2">
-            <a href="sid_imports_list.html"><b>sid/imports</b></a>†
+            <a href="sid_main_list.html"><b>sid/meta</b></a>
         </td>
-        <td class="tablecell-partial"><a href="buster_imports_list.html"><b>buster/imports</b></a>†</td>
-        <td class="tablecell-partial"><a href="stretch_imports_list.html"><b>stretch/imports</b></a>†</td>
-        <td class="tablecell-partial"><a href="bionic_imports_list.html"><b>bionic/imports</b></a>†</td>
     </tr>
 
     <tr>
-        <td style="width: 40%"><b>forks</b>: Forked / modified packages that intend to replace the versions available in Debian or Ubuntu.
-        Changes for each package vary - see their individual changelogs for more info.</td>
-        <td class="tablecell-na" colspan="2">
-            N/A
+        <td style="width: 40%"><b>imports</b>: Extra packages that are either imported from an external source or not supported well enough (by me) to put in main. This section may include non-free content.</td>
+        <td class="tablecell-yes" colspan="2">
+            <a href="sid_imports_list.html"><b>sid/imports</b></a>
         </td>
-        <td class="tablecell-partial"><a href="buster_forks_list.html"><b>buster/forks</b></a></td>
-        <td class="tablecell-partial"><a href="stretch_forks_list.html"><b>stretch/forks</b></a></td>
-        <td class="tablecell-partial"><a href="bionic_forks_list.html"><b>bionic/forks</b></a></td>
+        <td class="tablecell-partial">
+            <a href="buster_imports_list.html"><b>buster/imports</b></a>
+        </td>
+    </tr>
+
+    <tr>
+        <td style="width: 40%"><b>newlibs</b>: Forked packages that may upgrade or replace libraries in Debian. <em>Use with caution</em> - packages here may not work with everything in Debian.</td>
+        <td class="tablecell-na" colspan="2">
+            <a href="experimental_main_list.html"><b>experimental/main</b></a>
+        </td>
+        <td class="tablecell-partial">
+            <a href="buster_forks_list.html"><b>buster/forks</b></a>
+        </td>
     </tr>
 
     <tr>
         <td style="width: 40%"><b>nightlies</b>: <a href="https://github.com/utopia-repository/utopia-scripts/tree/master/autobuilder">Automatic nightly builds</a> by the Utopia Repository team.</td>
-        <td class="tablecell-yes" colspan="2"><a href="sid-nightlies_main_list.html"><b>sid-nightlies</b></a></td>
+        <td class="tablecell-yes" colspan="2">
+            <a href="sid-nightlies_main_list.html"><b>sid-nightlies</b></a>
+        </td>
         <td class="tablecell-yes">
             <a href="buster-nightlies_main_list.html"><b>buster-nightlies</b></a>
         </td>
-        <td class="tablecell-no"><a href="stretch-nightlies_main_list.html"><b>stretch-nightlies</b></a>
-            <br>[EOL 2019-11-30]</td>
-        <td class="tablecell-na">N/A</td>
-    </tr>
-
-    <tr>
-        <td style="width: 40%"><b>experimental</b>: Bleeding edge &amp; testing packages that <i>may upgrade system libraries</i> and thus cause package conflicts.
-        Use with caution!</td>
-        <td class="tablecell-yes"><a href="experimental_main_list.html"><b>experimental</b></a></td>
-        <td class="tablecell-na" colspan="4">N/A</td>
     </tr>
 
 </table>
-<p>† Limited support for <b>imports</b> suites</p>
 
 <h2 id="instructions">Instructions</h2>
-<p>This repository works like any other APT repository or Ubuntu PPA, and is signed using a PGP key. Both HTTP and verified HTTPS are available.</p>
+<p>This repository works like any other APT repository, and is signed using a PGP key. Both HTTP and verified HTTPS are available.</p>
 <h3>1) Add the repository to sources.list</h3>
 
 <div class="requiresjs">
