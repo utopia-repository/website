@@ -197,14 +197,13 @@ function update_available_components() {
 <body onload="init()">
 <h1><a href="/"><img src="urepo.png" class="logo" alt="Utopia Repository Logo"></a>The Utopia Repository</h1>
 
-<div class="lead">
-    <p>View the repo in your browser: <a href="dists/">dists/</a> <a href="pool/">pool/</a></p>
-    <p><b>The Utopia Repository</b> is an addons repository for Debian, administered by <a href="https://qa.debian.org/developer.php?login=James+Lu">James Lu</a>. Supported architectures include amd64 (primary target), i386, armhf, and arm64.</p>
-    <p class="disclaimer">Absolutely no warranty is provided for the software in this repository; use at your own risk!</p>
-</div>
+<p>View the repo in your browser: <a href="dists/">dists/</a> <a href="pool/">pool/</a></p>
+<p><b>The Utopia Repository</b> is an addons repository for Debian, administered by <a href="https://qa.debian.org/developer.php?login=James+Lu">James Lu</a>. Supported architectures include amd64 (primary target), i386, armhf, and arm64.</p>
+<p class="disclaimer">Absolutely no warranty is provided for the software in this repository; use at your own risk!</p>
+
 
 <h2 id="news">News</h2>
-<ul class="lead">
+<ul>
     <li><b>2021-03-16</b>: stretch and bionic have been dropped. <b>sid/main</b> has been split into two new sections: <b>newlibs</b> (replacing forks for bullseye) and <b>meta</b> (new home for meta-packages).</li>
     <li><b>2019-04-30</b>: KEY TRANSITION - All repository updates going forward will now be signed with the Utopia Repository Automatic Signing Key (<a href="https://keyserver.ubuntu.com/pks/lookup?search=0x4A4A7B0E6EFB2FD90FD4F58C4A8C96B8EEBB01E6&op=vindex">4A4A7B0E6EFB2FD90FD4F58C4A8C96B8EEBB01E6</a>). This is the same key that is currently used to provide nightly builds.</li>
     <li><strike><b>2018-12-22</b>:
@@ -329,6 +328,7 @@ sudo apt-get install ./keyring-latest.deb</pre>
     <li><b>Convenience.</b> This repository hosts a few meta-packages (utopia-* in main) to make it easier to pull in a working system. (forget selecting 30 individual packages!)</li>
     <li><b>The learning experience.</b> This is pretty self-explanatory. :)</li>
 </ol>
+
 <h2 id="contact">Contact</h2>
 <p>Questions? Feedback? Concerns? Send me an e-mail at <a href="mailto:james@overdrivenetworks.com">james@overdrivenetworks.com</a></p>
 <p>Alternatively, you may file an issue against the <a href="https://github.com/utopia-repository/utopia-packages">utopia-packages GitHub repository</a>.</p>

@@ -1,6 +1,10 @@
 /* Styles for deb.utopia-repository.org */
+
+@import url('https://fonts.googleapis.com/css2?family=PT+Sans:wght@400;700&display=swap');
+
 body {
     margin: 1%;
+    font-family: sans-serif;
 }
 
 /* Indented code blocks */
@@ -14,18 +18,14 @@ pre {
     overflow: auto;
 }
 
-/* Headings */
 h1, h2 {
-    font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
+    font-family: 'PT Sans', sans-serif;
 }
 
-h1 {
-    color: #353;
-    border-bottom: 1px solid #888;
-}
-
+/* Headings */
 h2 {
-    color: DarkSlateBlue;
+    color: #115;
+    border-bottom: 1px solid #888;
 }
 
 /* (╮°-°)╮┳━┳ */
@@ -51,10 +51,6 @@ td > ul {
 }
 
 /* misc, decorative */
-
-.lead {
-    font-size: large;
-}
 
 .disclaimer {
     font-variant: small-caps;
