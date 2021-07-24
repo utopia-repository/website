@@ -202,15 +202,38 @@ function update_available_components() {
 <p class="disclaimer">Absolutely no warranty is provided for the software in this repository; use at your own risk!</p>
 
 
+<h2>Mirror status</h2>
+<p>Current server:
+    <noscript><a href="mirrorinfo">Click to check</a></noscript>
+    <b><span id="mirrorinfo"></span></b>
+</p>
+<p>All active mirrors:
+<ul>
+    <li>New York, US - <a href="https://deb-master.utopia-repository.org">deb-master.utopia-repository.org</a></li>
+    <li>Amsterdam, NL - <a href="https://deb2.utopia-repository.org">deb2.utopia-repository.org</a></li>
+    <li>Singapore, SG - <a href="https://deb3.utopia-repository.org">deb3.utopia-repository.org</a></li>
+</ul>
+<p>Default mirror routing uses geolocation data from <a href="https://db-ip.com/">DB-IP</a>.</p>
+<script>
+let req = new XMLHttpRequest();
+req.addEventListener("load", function() {
+    let elem = document.getElementById("mirrorinfo");
+    console.log(this);
+    if (this.status === 200) {
+        elem.innerText = this.responseText;
+    } else {
+        elem.innerText = `[Error fetching mirrorinfo: ${this.status} ${this.statusText}]`;
+    }
+});
+req.overrideMimeType("text/plain;");
+req.open("GET", "mirrorinfo");
+req.send();
+</script>
+
 <h2 id="news">News</h2>
 <ul>
+    <li><b>2021-07-23</b>: deb.utopia-repository.org now points to a mini-CDN (routed by GeoDNS), with sites in US, NL, and SG.</li>
     <li><b>2021-03-16</b>: stretch and bionic have been dropped. <b>sid/main</b> has been split into two new sections: <b>newlibs</b> (replacing forks for bullseye) and <b>meta</b> (new home for meta-packages).</li>
-    <li><b>2019-04-30</b>: KEY TRANSITION - All repository updates going forward will now be signed with the Utopia Repository Automatic Signing Key (<a href="https://keyserver.ubuntu.com/pks/lookup?search=0x4A4A7B0E6EFB2FD90FD4F58C4A8C96B8EEBB01E6&op=vindex">4A4A7B0E6EFB2FD90FD4F58C4A8C96B8EEBB01E6</a>). This is the same key that is currently used to provide nightly builds.</li>
-    <li><strike><b>2018-12-22</b>:
-        A new mirror is available (Europe) at <a href="//deb2.utopia-repository.org">deb2.utopia-repository.org</a>, serving all suites except nightlies. The main server (USA) remains at <a href="//deb.utopia-repository.org">deb.utopia-repository.org</a></strike>
-    <li><b>2018-08-18</b>:
-        The Utopia Repository moves to a new address: <b>deb.utopia-repository.org</b><br>
-        Nightly builds will now be served from: <b>ni.deb.utopia-repository.org</b>
 </ul>
 
 <h2 id="contents">Contents</h2>
