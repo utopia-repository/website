@@ -3,7 +3,7 @@
 @import url('https://fonts.googleapis.com/css2?family=PT+Sans:wght@400;700&display=swap');
 
 body {
-    margin: 1%;
+    margin: 1vh 5vw;
     font-family: sans-serif;
 }
 
@@ -22,13 +22,11 @@ h1, h2 {
     font-family: 'PT Sans', sans-serif;
 }
 
-/* Headings */
 h2 {
     color: #115;
     border-bottom: 1px solid #888;
 }
 
-/* (╮°-°)╮┳━┳ */
 table, th, td {
     border: 1px solid black;
 }
@@ -48,6 +46,17 @@ td:first-child {
 
 td > ul {
     text-align: initial;
+}
+
+.flex-container {
+    display: inline-flex;
+    flex-wrap: wrap;
+    flex-basis: content;
+    column-gap: 10px;
+}
+
+.flex-container > div {
+    max-width: 800px;
 }
 
 /* misc, decorative */
@@ -77,6 +86,24 @@ table.sortable th:not(.sorttable_sorted):not(.sorttable_sorted_reverse):not(.sor
 }
 table.sortable thead {
     cursor: default;
+}
+
+table .shortcol {
+    max-width: 960px;
+    width: 40%;
+}
+table .widecol {
+    min-width: 100px;
+    max-width: 960px;
+    width: 60%;
+}
+
+#legend-table {
+    align-self: flex-start;
+}
+
+#component_selector {
+    display: inline-block;
 }
 
 img.logo {

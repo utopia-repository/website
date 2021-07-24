@@ -6,16 +6,6 @@
 <title>The Utopia Repository</title>
 <link rel="stylesheet" type="text/css" href="gstyle.css">
 
-<style>
-/* Better scaling of the legend table on smaller devices */
-@media (min-width: 1200px) {
-    table#legend-table {
-        float: right;
-        width: 15%;
-    }
-}
-</style>
-
 <script>
 // Map which sections are available for each OS version
 const SUPPORTED_RELEASES = {
@@ -201,43 +191,103 @@ function update_available_components() {
 <p><b>The Utopia Repository</b> is an addons repository for Debian, administered by <a href="https://qa.debian.org/developer.php?login=James+Lu">James Lu</a>. Supported architectures include amd64 (primary target), i386, armhf, and arm64.</p>
 <p class="disclaimer">Absolutely no warranty is provided for the software in this repository; use at your own risk!</p>
 
-
-<h2>Mirror status</h2>
-<p>Current server:
-    <noscript><a href="mirrorinfo">Click to check</a></noscript>
-    <b><span id="mirrorinfo"></span></b>
-</p>
-<p>All active mirrors:
-<ul>
-    <li>New York, US - <a href="https://deb-master.utopia-repository.org">deb-master.utopia-repository.org</a></li>
-    <li>Amsterdam, NL - <a href="https://deb2.utopia-repository.org">deb2.utopia-repository.org</a></li>
-    <li>Singapore, SG - <a href="https://deb3.utopia-repository.org">deb3.utopia-repository.org</a></li>
-</ul>
-<p>Default mirror routing uses geolocation data from <a href="https://db-ip.com/">DB-IP</a>.</p>
-<script>
-let req = new XMLHttpRequest();
-req.addEventListener("load", function() {
-    let elem = document.getElementById("mirrorinfo");
-    console.log(this);
-    if (this.status === 200) {
-        elem.innerText = this.responseText;
-    } else {
-        elem.innerText = `[Error fetching mirrorinfo: ${this.status} ${this.statusText}]`;
-    }
-});
-req.overrideMimeType("text/plain;");
-req.open("GET", "mirrorinfo");
-req.send();
-</script>
-
-<h2 id="news">News</h2>
-<ul>
-    <li><b>2021-07-23</b>: deb.utopia-repository.org now points to a mini-CDN (routed by GeoDNS), with sites in US, NL, and SG.</li>
-    <li><b>2021-03-16</b>: stretch and bionic have been dropped. <b>sid/main</b> has been split into two new sections: <b>newlibs</b> (replacing forks for bullseye) and <b>meta</b> (new home for meta-packages).</li>
-</ul>
+<div class="flex-container">
+    <div>
+        <h2>Mirror status</h2>
+        <p>Current server:
+            <noscript><a href="mirrorinfo">Click to check</a></noscript>
+            <b><span id="mirrorinfo"></span></b>
+        </p>
+        <p>All active mirrors:
+        <ul>
+            <li>New York, US - <a href="https://deb-master.utopia-repository.org">deb-master.utopia-repository.org</a></li>
+            <li>Amsterdam, NL - <a href="https://deb2.utopia-repository.org">deb2.utopia-repository.org</a></li>
+            <li>Singapore, SG - <a href="https://deb3.utopia-repository.org">deb3.utopia-repository.org</a></li>
+        </ul>
+        <p>Default mirror routing uses geolocation data from <a href="https://db-ip.com/">DB-IP</a>.</p>
+        <script>
+        let req = new XMLHttpRequest();
+        req.addEventListener("load", function() {
+            let elem = document.getElementById("mirrorinfo");
+            console.log(this);
+            if (this.status === 200) {
+                elem.innerText = this.responseText;
+            } else {
+                elem.innerText = `[Error fetching mirrorinfo: ${this.status} ${this.statusText}]`;
+            }
+        });
+        req.overrideMimeType("text/plain;");
+        req.open("GET", "mirrorinfo");
+        req.send();
+        </script>
+    </div>
+    <div>
+        <h2 id="news">News</h2>
+        <ul>
+            <li><b>2021-07-23</b>: deb.utopia-repository.org now points to a mini-CDN (routed by GeoDNS), with sites in US, NL, and SG.</li>
+            <li><b>2021-03-16</b>: stretch and bionic have been dropped. <b>sid/main</b> has been split into two new sections: <b>newlibs</b> (replacing forks for bullseye) and <b>meta</b> (new home for meta-packages).</li>
+        </ul>
+    </div>
+</div>
 
 <h2 id="contents">Contents</h2>
 <p>The following suites exist in The Utopia Repository, but availability varies between OS versions. <b>Please check which sections suit your setup before adding things to sources.list!</b></p>
+
+<div class="flex-container">
+<table id="contents-table">
+    <tr>
+        <th class="widecol">Suite</th>
+        <th class="tablecell-yes">sid (unstable)</th>
+        <th class="tablecell-yes">bullseye (testing)</th>
+        <th class="tablecell-yes">buster (stable)</th>
+    </tr>
+
+    <tr>
+        <td class="shortcol"><b>main</b>: Free software addons for Debian. For stable releases, this may also include unofficial backports for certain packages.</td>
+        <td class="tablecell-yes" colspan="2">
+            <!-- Note: &#8203; is a zero width space to facilitate better line wrapping -->
+            <a href="sid_main_list.html"><b>sid/&#8203;main</b></a>
+        </td>
+        <td class="tablecell-yes" rowspan="2"><a href="buster_main_list.html"><b>buster/&#8203;main</b></a></td>
+    </tr>
+
+    <tr>
+        <td class="shortcol"><b>meta</b>: This section contains Utopia-branded packages which ship my desktop settings and custom package sets (<a href="https://github.com/utopia-repository/utopia-packages">source</a>).</td>
+        <td class="tablecell-yes" colspan="2">
+            <a href="sid_meta_list.html"><b>sid/&#8203;meta</b></a>
+        </td>
+    </tr>
+
+    <tr>
+        <td class="shortcol"><b>imports</b>: Extra packages that are either imported from an external source or not supported well enough (by me) to put in main. This section may include non-free content.</td>
+        <td class="tablecell-yes" colspan="2">
+            <a href="sid_imports_list.html"><b>sid/&#8203;imports</b></a>
+        </td>
+        <td class="tablecell-partial">
+            <a href="buster_imports_list.html"><b>buster/&#8203;imports</b></a>
+        </td>
+    </tr>
+
+    <tr>
+        <td class="shortcol"><b>newlibs</b>: Forked packages that may upgrade or replace libraries in Debian. <em>Use with caution</em> - packages here may not work with everything in Debian.</td>
+        <td class="tablecell-na" colspan="2">
+            <a href="experimental_main_list.html"><b>experimental/&#8203;main</b></a>
+        </td>
+        <td class="tablecell-partial">
+            <a href="buster_forks_list.html"><b>buster/&#8203;forks</b></a>
+        </td>
+    </tr>
+
+    <tr>
+        <td class="shortcol"><b>nightlies</b>: <a href="https://github.com/utopia-repository/utopia-scripts/tree/master/autobuilder">Automatic nightly builds</a> by the Utopia Repository team.</td>
+        <td class="tablecell-yes" colspan="2">
+            <a href="sid-nightlies_main_list.html"><b>sid-&#8203;nightlies</b></a>
+        </td>
+        <td class="tablecell-yes">
+            <a href="buster-nightlies_main_list.html"><b>buster-&#8203;nightlies</b></a>
+        </td>
+    </tr>
+</table>
 
 <table id="legend-table">
     <tr>
@@ -259,61 +309,7 @@ req.send();
         <td class="tablecell-na">Suite not available</td>
     </tr>
 </table>
-<table>
-    <tr>
-        <th>Suite</th>
-        <th class="tablecell-yes">sid (unstable)</th>
-        <th class="tablecell-yes">bullseye (testing)</th>
-        <th class="tablecell-yes">buster (stable)</th>
-    </tr>
-
-    <tr>
-        <td style="width: 40%"><b>main</b>: Free software addons for Debian. For stable releases, this may also include unofficial backports for certain packages.</td>
-        <td class="tablecell-yes" colspan="2">
-            <a href="sid_main_list.html"><b>sid/main</b></a>
-        </td>
-        <td class="tablecell-yes" rowspan="2"><a href="buster_main_list.html"><b>buster/main</b></a></td>
-    </tr>
-
-    <tr>
-        <td style="width: 40%"><b>meta</b>: This section contains Utopia-branded packages which ship my desktop settings and custom package sets (<a href="https://github.com/utopia-repository/utopia-packages">source</a>).</td>
-        <td class="tablecell-yes" colspan="2">
-            <a href="sid_meta_list.html"><b>sid/meta</b></a>
-        </td>
-    </tr>
-
-    <tr>
-        <td style="width: 40%"><b>imports</b>: Extra packages that are either imported from an external source or not supported well enough (by me) to put in main. This section may include non-free content.</td>
-        <td class="tablecell-yes" colspan="2">
-            <a href="sid_imports_list.html"><b>sid/imports</b></a>
-        </td>
-        <td class="tablecell-partial">
-            <a href="buster_imports_list.html"><b>buster/imports</b></a>
-        </td>
-    </tr>
-
-    <tr>
-        <td style="width: 40%"><b>newlibs</b>: Forked packages that may upgrade or replace libraries in Debian. <em>Use with caution</em> - packages here may not work with everything in Debian.</td>
-        <td class="tablecell-na" colspan="2">
-            <a href="experimental_main_list.html"><b>experimental/main</b></a>
-        </td>
-        <td class="tablecell-partial">
-            <a href="buster_forks_list.html"><b>buster/forks</b></a>
-        </td>
-    </tr>
-
-    <tr>
-        <td style="width: 40%"><b>nightlies</b>: <a href="https://github.com/utopia-repository/utopia-scripts/tree/master/autobuilder">Automatic nightly builds</a> by the Utopia Repository team.</td>
-        <td class="tablecell-yes" colspan="2">
-            <a href="sid-nightlies_main_list.html"><b>sid-nightlies</b></a>
-        </td>
-        <td class="tablecell-yes">
-            <a href="buster-nightlies_main_list.html"><b>buster-nightlies</b></a>
-        </td>
-    </tr>
-
-</table>
-
+</div>
 <h2 id="instructions">Instructions</h2>
 <p>This repository works like any other APT repository, and is signed using a PGP key. Both HTTP and verified HTTPS are available.</p>
 <h3>1) Add the repository to sources.list</h3>
