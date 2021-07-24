@@ -180,6 +180,23 @@ function update_available_components() {
 
     refresh_text()
 }
+
+function ajaxFetch(url, textContainer, errorString) {
+    let req = new XMLHttpRequest();
+    req.addEventListener("load", function() {
+        if (this.status === 200) {
+            textContainer.innerText = this.responseText;
+        } else if (errorString) {
+            textContainer.innerText = errorString;
+        } else {
+            textContainer.innerText = `[Error fetching ${url}: ${this.status} ${this.statusText}]`;
+        }
+    });
+    req.overrideMimeType("text/plain;");
+    req.open("GET", url);
+    req.send();
+}
+
 </script>
 <noscript><style> .requiresjs { display: none } </style></noscript>
 </head>
@@ -198,6 +215,7 @@ function update_available_components() {
             <noscript><a href="mirrorinfo">Click to check</a></noscript>
             <b><span id="mirrorinfo"></span></b>
         </p>
+        <p>Last update: <b><span id="mirror-lastsync"></span></b></p>
         <p>All active mirrors:
         <ul>
             <li>New York, US - <a href="https://deb-master.utopia-repository.org">deb-master.utopia-repository.org</a></li>
@@ -206,19 +224,8 @@ function update_available_components() {
         </ul>
         <p>Default mirror routing uses geolocation data from <a href="https://db-ip.com/">DB-IP</a>.</p>
         <script>
-        let req = new XMLHttpRequest();
-        req.addEventListener("load", function() {
-            let elem = document.getElementById("mirrorinfo");
-            console.log(this);
-            if (this.status === 200) {
-                elem.innerText = this.responseText;
-            } else {
-                elem.innerText = `[Error fetching mirrorinfo: ${this.status} ${this.statusText}]`;
-            }
-        });
-        req.overrideMimeType("text/plain;");
-        req.open("GET", "mirrorinfo");
-        req.send();
+        ajaxFetch("mirrorinfo", document.getElementById("mirrorinfo"));
+        ajaxFetch(".lastsync", document.getElementById("mirror-lastsync"), "N/A");
         </script>
     </div>
     <div>
