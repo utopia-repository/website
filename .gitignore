@@ -2,6 +2,7 @@
 *_list.html
 sndiff/
 mirrorinfo
+.lastsync
 
 # letsencrypt
 .well-known

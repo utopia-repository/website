@@ -231,6 +231,7 @@ function ajaxFetch(url, textContainer, errorString) {
     <div>
         <h2 id="news">News</h2>
         <ul>
+            <li><b>2021-08-02</b>: <a href="bullseye_main_list.html">bullseye</a> has been split from sid in preparation for the Debian 11 release.</li>
             <li><b>2021-07-23</b>: deb.utopia-repository.org now points to a mini-CDN (routed by GeoDNS), with sites in US, NL, and SG.</li>
             <li><b>2021-03-16</b>: stretch and bionic have been dropped. <b>sid/main</b> has been split into two new sections: <b>newlibs</b> (replacing forks for bullseye) and <b>meta</b> (new home for meta-packages).</li>
         </ul>
@@ -251,24 +252,33 @@ function ajaxFetch(url, textContainer, errorString) {
 
     <tr>
         <td class="shortcol"><b>main</b>: Free software addons for Debian. For stable releases, this may also include unofficial backports for certain packages.</td>
-        <td class="tablecell-yes" colspan="2">
+        <td class="tablecell-yes">
             <!-- Note: &#8203; is a zero width space to facilitate better line wrapping -->
             <a href="sid_main_list.html"><b>sid/&#8203;main</b></a>
+        </td>
+        <td class="tablecell-yes">
+            <a href="bullseye_main_list.html"><b>bullseye/&#8203;main</b></a>
         </td>
         <td class="tablecell-yes" rowspan="2"><a href="buster_main_list.html"><b>buster/&#8203;main</b></a></td>
     </tr>
 
     <tr>
         <td class="shortcol"><b>meta</b>: This section contains Utopia-branded packages which ship my desktop settings and custom package sets (<a href="https://github.com/utopia-repository/utopia-packages">source</a>).</td>
-        <td class="tablecell-yes" colspan="2">
+        <td class="tablecell-yes">
             <a href="sid_meta_list.html"><b>sid/&#8203;meta</b></a>
+        </td>
+        <td class="tablecell-yes">
+            <a href="bullseye_meta_list.html"><b>bullseye/&#8203;meta</b></a>
         </td>
     </tr>
 
     <tr>
         <td class="shortcol"><b>imports</b>: Extra packages that are either imported from an external source or not supported well enough (by me) to put in main. This section may include non-free content.</td>
-        <td class="tablecell-yes" colspan="2">
+        <td class="tablecell-yes">
             <a href="sid_imports_list.html"><b>sid/&#8203;imports</b></a>
+        </td>
+        <td class="tablecell-yes">
+            <a href="bullseye_imports_list.html"><b>bullseye/&#8203;imports</b></a>
         </td>
         <td class="tablecell-partial">
             <a href="buster_imports_list.html"><b>buster/&#8203;imports</b></a>
@@ -277,8 +287,11 @@ function ajaxFetch(url, textContainer, errorString) {
 
     <tr>
         <td class="shortcol"><b>newlibs</b>: Forked packages that may upgrade or replace libraries in Debian. <em>Use with caution</em> - packages here may not work with everything in Debian.</td>
-        <td class="tablecell-na" colspan="2">
+        <td class="tablecell-na">
             <a href="experimental_main_list.html"><b>experimental/&#8203;main</b></a>
+        </td>
+        <td class="tablecell-planned">
+            <a href="bullseye_newlibs_list.html"><b>bullseye/&#8203;newlibs</b></a>
         </td>
         <td class="tablecell-partial">
             <a href="buster_forks_list.html"><b>buster/&#8203;forks</b></a>
@@ -290,8 +303,11 @@ function ajaxFetch(url, textContainer, errorString) {
             <a href="https://github.com/utopia-repository/utopia-scripts/tree/master/autobuilder">Automatic nightly builds</a> by the Utopia Repository team.
             (temporarily paused for maintenance)
         </td>
-        <td class="tablecell-planned" colspan="2">
+        <td class="tablecell-planned">
             <a href="sid-nightlies_main_list.html"><b>sid-&#8203;nightlies</b></a>
+        </td>
+        <td class="tablecell-planned">
+            <a href="bullseye-nightlies_main_list.html"><b>bullseye-&#8203;nightlies</b></a>
         </td>
         <td class="tablecell-planned">
             <a href="buster-nightlies_main_list.html"><b>buster-&#8203;nightlies</b></a>
@@ -307,7 +323,7 @@ function ajaxFetch(url, textContainer, errorString) {
         <td class="tablecell-yes">Active maintenance</td>
     </tr>
     <tr>
-        <td class="tablecell-partial">Bug fixes only</td>
+        <td class="tablecell-partial">Maintenance fixes only</td>
     </tr>
     <tr>
         <td class="tablecell-no">EOL or unsupported</td>
@@ -316,7 +332,7 @@ function ajaxFetch(url, textContainer, errorString) {
         <td class="tablecell-planned">Coming soon/temp. unavailable</td>
     </tr>
     <tr>
-        <td class="tablecell-na">Suite not available</td>
+        <td class="tablecell-na">Suite unused or not available</td>
     </tr>
 </table>
 </div>
