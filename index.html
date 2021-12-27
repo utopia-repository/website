@@ -10,12 +10,14 @@
 // Map which sections are available for each OS version
 const SUPPORTED_RELEASES = {
     'sid': ['main', 'imports', 'meta', 'nightlies', 'experimental'],
+    'bullseye': ['main', 'imports', 'meta', 'newlibs'], // no nightlies yet
     'buster': ['main', 'imports', 'nightlies', 'forks']
 }
 
 // Map distro codenames to display name
 const RELEASE_NAMES = {
-    'sid': 'Debian Testing/Unstable (bullseye/sid)',
+    'sid': 'Debian Testing/Unstable (bookworm/sid)',
+    'bullseye': 'Debian 11 (bullseye)',
     'buster': 'Debian 10 (buster)'
 }
 
@@ -246,8 +248,8 @@ function ajaxFetch(url, textContainer, errorString) {
     <tr>
         <th class="widecol">Suite</th>
         <th class="tablecell-yes">sid (unstable)</th>
-        <th class="tablecell-yes">bullseye (testing)</th>
-        <th class="tablecell-yes">buster (stable)</th>
+        <th class="tablecell-yes">bullseye (stable)</th>
+        <th class="tablecell-partial">buster (oldstable)</th>
     </tr>
 
     <tr>
@@ -259,7 +261,7 @@ function ajaxFetch(url, textContainer, errorString) {
         <td class="tablecell-yes">
             <a href="bullseye_main_list.html"><b>bullseye/&#8203;main</b></a>
         </td>
-        <td class="tablecell-yes" rowspan="2"><a href="buster_main_list.html"><b>buster/&#8203;main</b></a></td>
+        <td class="tablecell-partial" rowspan="2"><a href="buster_main_list.html"><b>buster/&#8203;main</b></a></td>
     </tr>
 
     <tr>
