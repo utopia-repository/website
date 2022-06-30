@@ -10,7 +10,7 @@
 // Map which sections are available for each OS version
 const SUPPORTED_RELEASES = {
     'sid': ['main', 'imports', 'meta', 'experimental'],
-    'bullseye': ['main', 'imports', 'meta', 'newlibs'], // no nightlies yet
+    'bullseye': ['main', 'imports', 'meta', 'newlibs'],
     'buster': ['main', 'imports', 'forks']
 }
 
@@ -32,9 +32,7 @@ if (window.location.hostname.endsWith('.utopia-repository.org')) {
 }
 
 // Defines special release/suite combinations in the suite picker
-const SPECIAL_CASES = {'backports': BASE_URL + ' $current-backports main',
-                       'nightlies': 'http://ni.deb.utopia-repository.org $current-nightlies main',
-                       'experimental': BASE_URL + ' experimental main'}
+const SPECIAL_CASES = {'experimental': BASE_URL + ' experimental main'}
 
 // Default OS version, components, and repository URL
 var selected_os = 'sid'
