@@ -342,10 +342,11 @@ deb-src [signed-by=/usr/share/keyrings/utopia-repository.asc] http://deb.utopia-
 </noscript>
 
 <h3>2) Install the repository's PGP signing key</h3>
-<p>Download the <a href="https://deb.utopia-repository.org/keyring-latest.deb">utopia-keyring</a> package over HTTPS and install it locally:</p>
+<p>Download the latest <a href="https://deb.utopia-repository.org/pool/main/u/utopia-keyring/">utopia-keyring</a> package over HTTPS and install it locally:</p>
 
-<pre>wget https://deb.utopia-repository.org/keyring-latest.deb
-sudo apt-get install ./keyring-latest.deb</pre>
+<pre>
+sudo apt-get install ./utopia-keyring_*_all.deb
+</pre>
 
 <p>Updates to the keyring set will be automatically applied afterwards.</p>
 
