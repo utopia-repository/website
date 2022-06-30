@@ -26,9 +26,9 @@ const SIGNED_BY = "[signed-by=/usr/share/keyrings/utopia-repository.asc] ";
 // Hack for mirror support
 var BASE_URL;
 if (window.location.hostname.endsWith('.utopia-repository.org')) {
-    BASE_URL = 'http://' + window.location.hostname + '/'
+    BASE_URL = 'https://' + window.location.hostname + '/'
 } else {
-    BASE_URL = 'http://deb.utopia-repository.org/'
+    BASE_URL = 'https://deb.utopia-repository.org/'
 }
 
 // Defines special release/suite combinations in the suite picker
@@ -39,9 +39,6 @@ const SPECIAL_CASES = {'backports': BASE_URL + ' $current-backports main',
 // Default OS version, components, and repository URL
 var selected_os = 'sid'
 var selected_components = ['main']
-
-// Internal value: whether the SSL checkbox is selected.
-var use_ssl = false
 
 function init() {
     // Populate the drop down list of displayed SUPPORTED_RELEASES with the ones defined above.
@@ -62,14 +59,6 @@ function init() {
     update_available_components()
 }
 
-function _ssl_link(url) {
-    var http_prefix = "http://"
-    if (url && url.startsWith(http_prefix)) {
-        return "https://" + url.substring(http_prefix.length);
-    }
-    return url;  // unknown
-}
-
 function refresh_text() {
     console.log("Selected distribution " + selected_os)
     console.log("Selected components " + selected_components)
@@ -77,22 +66,10 @@ function refresh_text() {
     displayed_components = []
     output = ''
 
-    if (use_ssl) {
-        real_base_url = _ssl_link(BASE_URL)
-    } else {
-        real_base_url = BASE_URL
-    }
-
-    console.log(real_base_url)
-
     // Add each dist as either a special case or component
     for (i = 0; i < selected_components.length; i++) {
         component = selected_components[i]
         special_url = SPECIAL_CASES[component]
-
-        if (use_ssl) {
-            special_url = _ssl_link(special_url)
-        }
 
         if (special_url) {
             // XXX: One day, template literals will be more elegant
@@ -106,7 +83,7 @@ function refresh_text() {
 
     if (displayed_components.length > 0) {
         // Write both deb (binary) and deb-src (source) links.
-        url = real_base_url + ' ' + selected_os + ' ' + displayed_components.join(' ')
+        url = BASE_URL + ' ' + selected_os + ' ' + displayed_components.join(' ')
         // Add the primary sections first
         output = 'deb ' + SIGNED_BY + url + '\ndeb-src ' + SIGNED_BY + url + '\n' + output
     }
@@ -123,7 +100,7 @@ function update_selected_components() {
     // add the value they represent to the list of selected components.
     for (i = 0; i < checkboxes.length; i++) {
         checkbox = checkboxes[i]
-        if (checkbox.checked && checkbox.value != "Use HTTPS?") {
+        if (checkbox.checked) {
             selected_components.push(checkbox.value)
         }
     }
@@ -162,23 +139,6 @@ function update_available_components() {
         caption_node = document.createTextNode(component) // create a label for the check box
         component_selector.appendChild(caption_node)
     }
-
-    // Add an option to toggle HTTPS on or off.
-    sslvar_text = "Use HTTPS?"
-    checkbox = document.createElement('input')
-    checkbox.type = 'checkbox'
-    checkbox.value = sslvar_text
-    checkbox.id = 'sslcheckbox'
-    checkbox.checked = use_ssl // Restore the previous checked state
-    checkbox.onchange = function() {
-        use_ssl = document.getElementById('sslcheckbox').checked
-        console.log("use_ssl set to " + use_ssl)
-        refresh_text()
-    }
-    component_selector.appendChild(checkbox)
-
-    text = document.createTextNode(sslvar_text)
-    component_selector.appendChild(text)
 
     refresh_text()
 }
@@ -232,6 +192,7 @@ function ajaxFetch(url, textContainer, errorString) {
     <div>
         <h2 id="news">News</h2>
         <ul>
+            <li><b>2022-06-30</b>: HTTPS is now enabled for all downloads.</li>
             <li><b>2021-12-26</b>: deb3 (SG) mirror has been decommissioned. Nightlies have been discontinued for the time being.</li>
             <li><b>2021-08-02</b>: <a href="bullseye_main_list.html">bullseye</a> has been split from sid in preparation for the Debian 11 release.</li>
             <li><b>2021-07-23</b>: deb.utopia-repository.org now points to a mini-CDN (routed by GeoDNS), with sites in US, NL, and SG.</li>
@@ -337,8 +298,8 @@ function ajaxFetch(url, textContainer, errorString) {
 
 <noscript><p><em>Note:</em> Enable JavaScript for a friendly sources.list generator!</p>
 
-<pre>deb [signed-by=/usr/share/keyrings/utopia-repository.asc] http://deb.utopia-repository.org/ <b>your-dist component1 component2 ...</b>
-deb-src [signed-by=/usr/share/keyrings/utopia-repository.asc] http://deb.utopia-repository.org/ <b>your-dist component1 component2 ...</b></pre>
+<pre>deb [signed-by=/usr/share/keyrings/utopia-repository.asc] https://deb.utopia-repository.org/ <b>your-dist component1 component2 ...</b>
+deb-src [signed-by=/usr/share/keyrings/utopia-repository.asc] https://deb.utopia-repository.org/ <b>your-dist component1 component2 ...</b></pre>
 </noscript>
 
 <h3>2) Install the repository's PGP signing key</h3>
