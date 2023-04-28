@@ -190,11 +190,11 @@ function ajaxFetch(url, textContainer, errorString) {
     <div>
         <h2 id="news">News</h2>
         <ul>
+            <li><b>2023-04-27</b>: buster (Debian 10) has been dropped.</li>
             <li><b>2022-06-30</b>: HTTPS is now enabled for all downloads.</li>
             <li><b>2021-12-26</b>: deb3 (SG) mirror has been decommissioned. Nightlies have been discontinued for the time being.</li>
             <li><b>2021-08-02</b>: <a href="bullseye_main_list.html">bullseye</a> has been split from sid in preparation for the Debian 11 release.</li>
             <li><b>2021-07-23</b>: deb.utopia-repository.org now points to a mini-CDN (routed by GeoDNS), with sites in US, NL, and SG.</li>
-            <li><b>2021-03-16</b>: stretch and bionic have been dropped. <b>sid/main</b> has been split into two new sections: <b>newlibs</b> (replacing forks for bullseye) and <b>meta</b> (new home for meta-packages).</li>
         </ul>
     </div>
 </div>
@@ -208,7 +208,6 @@ function ajaxFetch(url, textContainer, errorString) {
         <th class="widecol">Suite</th>
         <th class="tablecell-yes">sid (unstable)</th>
         <th class="tablecell-yes">bullseye (stable)</th>
-        <th class="tablecell-partial">buster (oldstable)</th>
     </tr>
 
     <tr>
@@ -220,7 +219,6 @@ function ajaxFetch(url, textContainer, errorString) {
         <td class="tablecell-yes">
             <a href="bullseye_main_list.html"><b>bullseye/&#8203;main</b></a>
         </td>
-        <td class="tablecell-partial" rowspan="2"><a href="buster_main_list.html"><b>buster/&#8203;main</b></a></td>
     </tr>
 
     <tr>
@@ -238,24 +236,18 @@ function ajaxFetch(url, textContainer, errorString) {
         <td class="tablecell-yes">
             <a href="sid_imports_list.html"><b>sid/&#8203;imports</b></a>
         </td>
-        <td class="tablecell-yes">
-            <a href="bullseye_imports_list.html"><b>bullseye/&#8203;imports</b></a>
-        </td>
         <td class="tablecell-partial">
-            <a href="buster_imports_list.html"><b>buster/&#8203;imports</b></a>
+            <a href="bullseye_imports_list.html"><b>bullseye/&#8203;imports</b></a>
         </td>
     </tr>
 
     <tr>
-        <td class="shortcol"><b>newlibs</b>: Forked packages that may upgrade or replace libraries in Debian. <em>Use with caution</em> - packages here may not work with everything in Debian.</td>
+        <td class="shortcol"><b>experimental</b>: Forked packages that may upgrade or replace libraries in Debian. <em>Use with caution</em> - packages here may not work with everything in Debian.</td>
         <td class="tablecell-na">
             <a href="experimental_main_list.html"><b>experimental/&#8203;main</b></a>
         </td>
-        <td class="tablecell-planned">
-            <a href="bullseye_newlibs_list.html"><b>bullseye/&#8203;newlibs</b></a>
-        </td>
-        <td class="tablecell-partial">
-            <a href="buster_forks_list.html"><b>buster/&#8203;forks</b></a>
+        <td class="tablecell-na">
+            N/A
         </td>
     </tr>
 </table>
