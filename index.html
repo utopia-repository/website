@@ -10,15 +10,15 @@
 // Map which sections are available for each OS version
 const SUPPORTED_RELEASES = {
     'sid': ['main', 'imports', 'meta', 'experimental'],
-    'bullseye': ['main', 'imports', 'meta', 'newlibs'],
-    'buster': ['main', 'imports', 'forks']
+    'bookworm': ['main', 'imports', 'meta'],
+    'bullseye': ['main', 'imports', 'meta']
 }
 
 // Map distro codenames to display name
 const RELEASE_NAMES = {
-    'sid': 'Debian Testing/Unstable (bookworm/sid)',
-    'bullseye': 'Debian 11 (bullseye)',
-    'buster': 'Debian 10 (buster)'
+    'sid': 'Debian Testing/Unstable (trixie/sid)',
+    'bookworm': 'Debian 12 (bookworm)',
+    'bullseye': 'Debian 11 (bullseye)'
 }
 
 const SIGNED_BY = "[signed-by=/usr/share/keyrings/utopia-repository.asc] ";
@@ -190,11 +190,9 @@ function ajaxFetch(url, textContainer, errorString) {
     <div>
         <h2 id="news">News</h2>
         <ul>
+            <li><b>2023-06-11</b>: <a href="bookworm_main_list.html">bookworm</a> has been split from unstable for the Debian 12 release.</li>
             <li><b>2023-04-27</b>: buster (Debian 10) has been dropped.</li>
-            <li><b>2022-06-30</b>: HTTPS is now enabled for all downloads.</li>
-            <li><b>2021-12-26</b>: deb3 (SG) mirror has been decommissioned. Nightlies have been discontinued for the time being.</li>
-            <li><b>2021-08-02</b>: <a href="bullseye_main_list.html">bullseye</a> has been split from sid in preparation for the Debian 11 release.</li>
-            <li><b>2021-07-23</b>: deb.utopia-repository.org now points to a mini-CDN (routed by GeoDNS), with sites in US, NL, and SG.</li>
+            <li><b>2022-06-30</b>: HTTPS is now enforced for all downloads.</li>
         </ul>
     </div>
 </div>
@@ -207,7 +205,9 @@ function ajaxFetch(url, textContainer, errorString) {
     <tr>
         <th class="widecol">Suite</th>
         <th class="tablecell-yes">sid (unstable)</th>
-        <th class="tablecell-yes">bullseye (stable)</th>
+        <th class="tablecell-yes">bookworm (stable)</th>
+        <th class="tablecell-partial">bullseye (oldstable)
+            <br>EOL [2023-12-31]</th>
     </tr>
 
     <tr>
@@ -217,6 +217,9 @@ function ajaxFetch(url, textContainer, errorString) {
             <a href="sid_main_list.html"><b>sid/&#8203;main</b></a>
         </td>
         <td class="tablecell-yes">
+            <a href="bookworm_main_list.html"><b>bookworm/&#8203;main</b></a>
+        </td>
+        <td class="tablecell-partial">
             <a href="bullseye_main_list.html"><b>bullseye/&#8203;main</b></a>
         </td>
     </tr>
@@ -227,6 +230,9 @@ function ajaxFetch(url, textContainer, errorString) {
             <a href="sid_meta_list.html"><b>sid/&#8203;meta</b></a>
         </td>
         <td class="tablecell-yes">
+            <a href="bookworm_meta_list.html"><b>bookworm/&#8203;meta</b></a>
+        </td>
+        <td class="tablecell-partial">
             <a href="bullseye_meta_list.html"><b>bullseye/&#8203;meta</b></a>
         </td>
     </tr>
@@ -237,6 +243,9 @@ function ajaxFetch(url, textContainer, errorString) {
             <a href="sid_imports_list.html"><b>sid/&#8203;imports</b></a>
         </td>
         <td class="tablecell-partial">
+            <a href="bookworm_imports_list.html"><b>bookworm/&#8203;imports</b></a>
+        </td>
+        <td class="tablecell-partial">
             <a href="bullseye_imports_list.html"><b>bullseye/&#8203;imports</b></a>
         </td>
     </tr>
@@ -245,6 +254,9 @@ function ajaxFetch(url, textContainer, errorString) {
         <td class="shortcol"><b>experimental</b>: Forked packages that may upgrade or replace libraries in Debian. <em>Use with caution</em> - packages here may not work with everything in Debian.</td>
         <td class="tablecell-na">
             <a href="experimental_main_list.html"><b>experimental/&#8203;main</b></a>
+        </td>
+        <td class="tablecell-na">
+            N/A
         </td>
         <td class="tablecell-na">
             N/A
@@ -313,6 +325,6 @@ sudo apt-get install ./utopia-keyring_*_all.deb
 </ol>
 
 <h2 id="contact">Contact</h2>
-<p>Questions? Feedback? Concerns? Send me an e-mail at <a href="mailto:james@overdrivenetworks.com">james@overdrivenetworks.com</a></p>
+<p>Questions? Feedback? Concerns? Send me an e-mail at <b>james&gt;at&lt;overdrivenetworks&gt;dot&lt;com</b></p>
 <p>Alternatively, you may file an issue against the <a href="https://github.com/utopia-repository/utopia-packages">utopia-packages GitHub repository</a>.</p>
 </body></html>
