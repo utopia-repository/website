@@ -207,8 +207,8 @@ function ajaxFetch(url, textContainer, errorString) {
         <th class="widecol">Suite</th>
         <th class="tablecell-yes">sid (unstable)</th>
         <th class="tablecell-yes">bookworm (stable)</th>
-        <th class="tablecell-partial">bullseye (oldstable)
-            <br>EOL [2023-12-31]</th>
+        <th class="tablecell-no">bullseye (oldstable)
+            <br>[EOL 2023-12-31]</th>
     </tr>
 
     <tr>
@@ -220,7 +220,7 @@ function ajaxFetch(url, textContainer, errorString) {
         <td class="tablecell-yes">
             <a href="bookworm_main_list.html"><b>bookworm/&#8203;main</b></a>
         </td>
-        <td class="tablecell-partial">
+        <td class="tablecell-no">
             <a href="bullseye_main_list.html"><b>bullseye/&#8203;main</b></a>
         </td>
     </tr>
@@ -233,7 +233,7 @@ function ajaxFetch(url, textContainer, errorString) {
         <td class="tablecell-yes">
             <a href="bookworm_meta_list.html"><b>bookworm/&#8203;meta</b></a>
         </td>
-        <td class="tablecell-partial">
+        <td class="tablecell-no">
             <a href="bullseye_meta_list.html"><b>bullseye/&#8203;meta</b></a>
         </td>
     </tr>
@@ -246,7 +246,7 @@ function ajaxFetch(url, textContainer, errorString) {
         <td class="tablecell-partial">
             <a href="bookworm_imports_list.html"><b>bookworm/&#8203;imports</b></a>
         </td>
-        <td class="tablecell-partial">
+        <td class="tablecell-no">
             <a href="bullseye_imports_list.html"><b>bullseye/&#8203;imports</b></a>
         </td>
     </tr>
@@ -278,9 +278,9 @@ function ajaxFetch(url, textContainer, errorString) {
     <tr>
         <td class="tablecell-no">EOL or unsupported</td>
     </tr>
-    <tr>
+    <!-- <tr>
         <td class="tablecell-planned">Coming soon/temp. unavailable</td>
-    </tr>
+    </tr> -->
     <tr>
         <td class="tablecell-na">Suite unused or not available</td>
     </tr>
