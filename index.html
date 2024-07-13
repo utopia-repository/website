@@ -6,286 +6,40 @@
 <title>The Utopia Repository</title>
 <link rel="stylesheet" type="text/css" href="gstyle.css">
 
-<script>
-// Map which sections are available for each OS version
-const SUPPORTED_RELEASES = {
-    'sid': ['main', 'imports', 'meta', 'experimental'],
-    'bookworm': ['main', 'imports', 'meta'],
-    'bullseye': ['main', 'imports', 'meta']
-}
-
-// Map distro codenames to display name
-const RELEASE_NAMES = {
-    'sid': 'Debian Testing/Unstable (trixie/sid)',
-    'bookworm': 'Debian 12 (bookworm)',
-    'bullseye': 'Debian 11 (bullseye)'
-}
-
-const SIGNED_BY = "[signed-by=/usr/share/keyrings/utopia-repository.asc] ";
-
-// Hack for mirror support
-var BASE_URL;
-if (window.location.hostname.endsWith('.utopia-repository.org')) {
-    BASE_URL = 'https://' + window.location.hostname + '/'
-} else {
-    BASE_URL = 'https://deb.utopia-repository.org/'
-}
-
-// Defines special release/suite combinations in the suite picker
-const SPECIAL_CASES = {'experimental': BASE_URL + ' experimental main'}
-
-// Default OS version, components, and repository URL
-var selected_os = 'sid'
-var selected_components = ['main']
-
-function init() {
-    // Populate the drop down list of displayed SUPPORTED_RELEASES with the ones defined above.
-    os_selector = document.getElementById('os_selector')
-
-    for (dist in SUPPORTED_RELEASES) {
-        option = document.createElement('option')
-        option.value = dist
-        // Prefer the display name for each distribution, unless it doesn't exist.
-        if (RELEASE_NAMES[dist]) {
-            option.textContent = RELEASE_NAMES[dist]
-        } else {
-            option.textContent = dist
-        }
-        os_selector.appendChild(option)
-    }
-
-    update_available_components()
-}
-
-function refresh_text() {
-    console.log("Selected distribution " + selected_os)
-    console.log("Selected components " + selected_components)
-
-    displayed_components = []
-    output = ''
-
-    // Add each dist as either a special case or component
-    for (i = 0; i < selected_components.length; i++) {
-        component = selected_components[i]
-        special_url = SPECIAL_CASES[component]
-
-        if (special_url) {
-            // XXX: One day, template literals will be more elegant
-            special_url = special_url.replace('$current', selected_os)
-
-            output += ('deb ' + SIGNED_BY + special_url + '\ndeb-src ' + SIGNED_BY + special_url + '\n')
-        } else {
-            displayed_components.push(component)
-        }
-    }
-
-    if (displayed_components.length > 0) {
-        // Write both deb (binary) and deb-src (source) links.
-        url = BASE_URL + ' ' + selected_os + ' ' + displayed_components.join(' ')
-        // Add the primary sections first
-        output = 'deb ' + SIGNED_BY + url + '\ndeb-src ' + SIGNED_BY + url + '\n' + output
-    }
-
-    document.getElementById('sources_list').innerHTML = output
-}
-
-function update_selected_components() {
-    component_selector = document.getElementById('component_selector')
-    checkboxes = component_selector.childNodes
-    selected_components = []
-
-    // Iterate over all the checkboxes to see if they're checked. If so,
-    // add the value they represent to the list of selected components.
-    for (i = 0; i < checkboxes.length; i++) {
-        checkbox = checkboxes[i]
-        if (checkbox.checked) {
-            selected_components.push(checkbox.value)
-        }
-    }
-    refresh_text()
-}
-
-function update_available_components() {
-    component_selector = document.getElementById('component_selector')
-    os_selector = document.getElementById('os_selector')
-
-    // First, clear all component choices.
-    while (component_selector.hasChildNodes()) {
-        component_selector.removeChild(component_selector.lastChild)
-    }
-
-    // Find the selected dist and populate a list of component choices
-    // using that. Each choice is a check box.
-    selected_os = os_selector.options[os_selector.selectedIndex].value
-    components = SUPPORTED_RELEASES[selected_os]
-
-    for (var i = 0; i < components.length; i++) {
-        component = components[i]
-        checkbox = document.createElement('input')
-        checkbox.type = 'checkbox'
-        checkbox.value = component
-        checkbox.onchange = function() {update_selected_components();}
-
-        if (i == 0) {
-            // By default, mark the first option (usually the "main" component
-            // as enabled).
-            checkbox.checked = true
-            selected_components = [component]
-        }
-
-        component_selector.appendChild(checkbox)
-        caption_node = document.createTextNode(component) // create a label for the check box
-        component_selector.appendChild(caption_node)
-    }
-
-    refresh_text()
-}
-
-function ajaxFetch(url, textContainer, errorString) {
-    let req = new XMLHttpRequest();
-    req.addEventListener("load", function() {
-        if (this.status === 200) {
-            textContainer.innerText = this.responseText;
-        } else if (errorString) {
-            textContainer.innerText = errorString;
-        } else {
-            textContainer.innerText = `[Error fetching ${url}: ${this.status} ${this.statusText}]`;
-        }
-    });
-    req.overrideMimeType("text/plain;");
-    req.open("GET", url);
-    req.send();
-}
-
-</script>
+<script src="js/global.js"></script>
+<script src="js/selector.js"></script>
 <noscript><style> .requiresjs { display: none } </style></noscript>
 </head>
 
 <body onload="init()">
 <h1><a href="/"><img src="urepo.png" class="logo" alt="Utopia Repository Logo"></a>The Utopia Repository</h1>
 
-<p>View the repo in your browser: <a href="dists/">dists/</a> <a href="pool/">pool/</a></p>
 <p><b>The Utopia Repository</b> is an addons repository for Debian, administered by <a href="https://qa.debian.org/developer.php?login=James+Lu">James Lu</a>. Supported architectures include amd64 (primary target), i386, armhf, and arm64.</p>
 <p class="disclaimer">Absolutely no warranty is provided for the software in this repository; use at your own risk!</p>
 
-<div class="flex-container">
-    <div>
-        <h2>Mirror status</h2>
-        <p>Current server:
-            <noscript><a href="mirrorinfo">Click to check</a></noscript>
-            <b><span id="mirrorinfo"></span></b>
-        </p>
-        <p>Last mirror sync: <b><span id="mirror-lastsync"></span></b></p>
-        <p>Active mirrors:
-        <ul>
-            <li>Los Angeles, CA, US - <a href="https://deb0.utopia-repository.org">deb0.utopia-repository.org</a></li>
-            <li>Tampa, FL, US - <a href="https://deb1.utopia-repository.org">deb1.utopia-repository.org</a></li>
-            <li>Amsterdam, NL - <a href="https://deb2.utopia-repository.org">deb2.utopia-repository.org</a></li>
-        </ul>
-        <p>Default mirror routing uses geolocation data from <a href="https://db-ip.com/">DB-IP</a>.</p>
-        <script>
-        ajaxFetch("mirrorinfo", document.getElementById("mirrorinfo"));
-        ajaxFetch(".lastsync", document.getElementById("mirror-lastsync"), "N/A");
-        </script>
-    </div>
-    <div>
-        <h2 id="news">News</h2>
-        <ul>
-            <li><b>2024-03-03</b>: The repository signing key has changed: <b>8AAA71DAE3BD50D5539A0100200A481378601485 Utopia Repository Signing Key &lt;admin at utopia-repository dot org&gt;</b>.</li>
-            <li><b>2023-12-29</b>: New mirrors added: <b>deb0</b> (Los Angeles, CA, US) and <b>deb1</b> (Tampa, FL, US).</li>
-            <li><b>2023-06-11</b>: <a href="bookworm_main_list.html">bookworm</a> has been split from unstable for the Debian 12 release.</li>
-        </ul>
-    </div>
-</div>
+<h2 id="news">News</h2>
+<ul>
+    <li><b>2024-07-13</b>: The repository now lives in the cloud! As such, the mirror network will be decommissioned shortly.</li>
+    <li><b>2024-03-03</b>: The repository signing key has changed: <b>8AAA71DAE3BD50D5539A0100200A481378601485 Utopia Repository Signing Key &lt;admin at utopia-repository dot org&gt;</b>.</li>
+    <li><b>2023-12-29</b>: <s>New mirrors added: <b>deb0</b> (Los Angeles, CA, US) and <b>deb1</b> (Tampa, FL, US).</s></li>
+    <li><b>2023-06-11</b>: bookworm has been split from unstable for the Debian 12 release.</li>
+</ul>
 
 <h2 id="contents">Contents</h2>
-<p>The following suites exist in The Utopia Repository, but availability varies between OS versions. <b>Please check which sections suit your setup before adding things to sources.list!</b></p>
+<p>The following suites exist in The Utopia Repository, but availability varies between OS versions.
+<ul>
+    <li>
+        <b>main</b>: Free software addons for Debian. For stable releases, this may also include unofficial backports for certain packages.
+    </li>
+    <li>
+        <b>meta</b>: This section contains Utopia-branded packages which ship my desktop settings and custom package sets (<a href="https://github.com/utopia-repository/utopia-packages">source</a>).
+    </li>
+    <li>
+        <b>imports</b>: Extra packages that are either imported from an external source or not supported well enough (by me) to put in main. This section may include non-free content.
+    </li>
+</ul>
+<p>Content listings will return at a later date.</p>
 
-<div class="flex-container">
-<table id="contents-table">
-    <tr>
-        <th class="widecol">Suite</th>
-        <th class="tablecell-yes">sid (unstable)</th>
-        <th class="tablecell-yes">bookworm (stable)</th>
-        <th class="tablecell-no">bullseye (oldstable)
-            <br>[EOL 2023-12-31]</th>
-    </tr>
-
-    <tr>
-        <td class="shortcol"><b>main</b>: Free software addons for Debian. For stable releases, this may also include unofficial backports for certain packages.</td>
-        <td class="tablecell-yes">
-            <!-- Note: &#8203; is a zero width space to facilitate better line wrapping -->
-            <a href="sid_main_list.html"><b>sid/&#8203;main</b></a>
-        </td>
-        <td class="tablecell-yes">
-            <a href="bookworm_main_list.html"><b>bookworm/&#8203;main</b></a>
-        </td>
-        <td class="tablecell-no">
-            <a href="bullseye_main_list.html"><b>bullseye/&#8203;main</b></a>
-        </td>
-    </tr>
-
-    <tr>
-        <td class="shortcol"><b>meta</b>: This section contains Utopia-branded packages which ship my desktop settings and custom package sets (<a href="https://github.com/utopia-repository/utopia-packages">source</a>).</td>
-        <td class="tablecell-yes">
-            <a href="sid_meta_list.html"><b>sid/&#8203;meta</b></a>
-        </td>
-        <td class="tablecell-yes">
-            <a href="bookworm_meta_list.html"><b>bookworm/&#8203;meta</b></a>
-        </td>
-        <td class="tablecell-no">
-            <a href="bullseye_meta_list.html"><b>bullseye/&#8203;meta</b></a>
-        </td>
-    </tr>
-
-    <tr>
-        <td class="shortcol"><b>imports</b>: Extra packages that are either imported from an external source or not supported well enough (by me) to put in main. This section may include non-free content.</td>
-        <td class="tablecell-yes">
-            <a href="sid_imports_list.html"><b>sid/&#8203;imports</b></a>
-        </td>
-        <td class="tablecell-partial">
-            <a href="bookworm_imports_list.html"><b>bookworm/&#8203;imports</b></a>
-        </td>
-        <td class="tablecell-no">
-            <a href="bullseye_imports_list.html"><b>bullseye/&#8203;imports</b></a>
-        </td>
-    </tr>
-
-    <tr>
-        <td class="shortcol"><b>experimental</b>: Forked packages that may upgrade or replace libraries in Debian. <em>Use with caution</em> - packages here may not work with everything in Debian.</td>
-        <td class="tablecell-na">
-            <a href="experimental_main_list.html"><b>experimental/&#8203;main</b></a>
-        </td>
-        <td class="tablecell-na">
-            N/A
-        </td>
-        <td class="tablecell-na">
-            N/A
-        </td>
-    </tr>
-</table>
-
-<table id="legend-table">
-    <tr>
-        <th>Legend</th>
-    </tr>
-    <tr>
-        <td class="tablecell-yes">Active maintenance</td>
-    </tr>
-    <tr>
-        <td class="tablecell-partial">Maintenance fixes only</td>
-    </tr>
-    <tr>
-        <td class="tablecell-no">EOL or unsupported</td>
-    </tr>
-    <!-- <tr>
-        <td class="tablecell-planned">Coming soon/temp. unavailable</td>
-    </tr> -->
-    <tr>
-        <td class="tablecell-na">Suite unused or not available</td>
-    </tr>
-</table>
-</div>
 <h2 id="instructions">Instructions</h2>
 <p>This repository works like any other APT repository, and is signed using a PGP key. Both HTTP and verified HTTPS are available.</p>
 <h3>1) Add the repository to sources.list</h3>
@@ -326,6 +80,6 @@ sudo apt-get install ./utopia-keyring_*_all.deb
 </ol>
 
 <h2 id="contact">Contact</h2>
-<p>Questions? Feedback? Concerns? Send me an e-mail at <b>james&gt;at&lt;overdrivenetworks&gt;dot&lt;com</b></p>
+<p>You can reach me at any of my <a href="https://qa.debian.org/developer.php?login=James+Lu">Debian emails</a>.</p>
 <p>Alternatively, you may file an issue against the <a href="https://github.com/utopia-repository/utopia-packages">utopia-packages GitHub repository</a>.</p>
 </body></html>
