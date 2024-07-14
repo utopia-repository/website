@@ -1,8 +1,5 @@
-// Map which sections are available for each OS version
-const SUPPORTED_RELEASES = {
-    'sid': ['main', 'imports', 'meta'],
-    'bookworm': ['main', 'imports', 'meta']
-}
+// Will be populated at runtime
+const DIST_COMPONENTS = {};
 
 // Map distro codenames to display name
 const RELEASE_NAMES = {

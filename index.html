@@ -7,8 +7,40 @@
 <link rel="stylesheet" type="text/css" href="gstyle.css">
 
 <script src="js/global.js"></script>
+<script src="js/contents.js"></script>
 <script src="js/selector.js"></script>
 <noscript><style> .requiresjs { display: none } </style></noscript>
+<script>
+async function init() {
+    const package_listings = document.getElementById('package_listings');
+    for (const dist in RELEASE_NAMES) {
+        dist_info = await get_dist_info(dist);
+        const components = dist_info.get('Components').split(' ');
+        DIST_COMPONENTS[dist] = components;
+
+        const package_listing_row = document.createElement('li');
+        const package_listing_row_heading = document.createElement('b');
+        package_listing_row_heading.append(dist);
+        package_listing_row.append(
+            package_listing_row_heading,
+            ` - ${RELEASE_NAMES[dist]}: `
+        );
+        package_listings.append(package_listing_row);
+        for (let component of components) {
+            const params = new URLSearchParams();
+            params.set('dist', dist);
+            params.set('component', component);
+            package_listing_row.append(make_link(
+                `contents.html?${params.toString()}`,
+                component
+            ), ' ');
+        }
+    }
+    init_selectors();
+    // Remove "Loading" text
+    package_listings.removeChild(package_listings.children[0]);
+}
+</script>
 </head>
 
 <body onload="init()">
@@ -26,7 +58,12 @@
 </ul>
 
 <h2 id="contents">Contents</h2>
-<p>The following suites exist in The Utopia Repository, but availability varies between OS versions.
+<p>The following releases are supported by the repository:
+<ul id="package_listings">
+    <li>Loading...</li>
+</ul>
+
+<h3>Components Overview</h3>
 <ul>
     <li>
         <b>main</b>: Free software addons for Debian. For stable releases, this may also include unofficial backports for certain packages.
@@ -38,7 +75,6 @@
         <b>imports</b>: Extra packages that are either imported from an external source or not supported well enough (by me) to put in main. This section may include non-free content.
     </li>
 </ul>
-<p>Content listings will return at a later date.</p>
 
 <h2 id="instructions">Instructions</h2>
 <p>This repository works like any other APT repository, and is signed using a PGP key. Both HTTP and verified HTTPS are available.</p>

@@ -2,11 +2,11 @@
 var selected_os = 'sid'
 var selected_components = ['main']
 
-function init() {
-    // Populate the drop down list of displayed SUPPORTED_RELEASES with the ones defined above.
+function init_selectors() {
+    // Populate the drop down list of displayed DIST_COMPONENTS with the ones defined above.
     os_selector = document.getElementById('os_selector')
 
-    for (dist in SUPPORTED_RELEASES) {
+    for (dist in DIST_COMPONENTS) {
         option = document.createElement('option')
         option.value = dist
         // Prefer the display name for each distribution, unless it doesn't exist.
@@ -81,7 +81,7 @@ function update_available_components() {
     // Find the selected dist and populate a list of component choices
     // using that. Each choice is a check box.
     selected_os = os_selector.options[os_selector.selectedIndex].value
-    components = SUPPORTED_RELEASES[selected_os]
+    components = DIST_COMPONENTS[selected_os]
 
     for (var i = 0; i < components.length; i++) {
         component = components[i]
@@ -90,11 +90,8 @@ function update_available_components() {
         checkbox.value = component
         checkbox.onchange = function() {update_selected_components();}
 
-        if (i == 0) {
-            // By default, mark the first option (usually the "main" component
-            // as enabled).
+        if (selected_components.includes(component)) {
             checkbox.checked = true
-            selected_components = [component]
         }
 
         component_selector.appendChild(checkbox)
