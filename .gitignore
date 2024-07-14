@@ -3,6 +3,7 @@
 sndiff/
 mirrorinfo
 .lastsync
+changelogs/
 
 # letsencrypt
 .well-known

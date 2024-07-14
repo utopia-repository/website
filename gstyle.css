@@ -65,6 +65,9 @@ td > ul {
     font-variant: small-caps;
     margin: 0;
     font-size: x-large;
+}
+
+.disclaimer, .error {
     font-weight: bold;
     color: maroon;
 }
