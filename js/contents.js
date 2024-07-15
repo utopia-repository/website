@@ -62,6 +62,18 @@ function make_tooltip(tooltip_text, contents) {
     return span;
 }
 
+const _DEPENDENCY_TYPE_TO_CLASS = {
+    'Depends': 'depends',
+    'Build-Depends': 'depends',
+    'Build-Depends-Indep': 'depends',
+    'Recommends': 'recommends',
+    'Suggests': 'suggests',
+    'Enhances': 'enhances',
+    'Provides': 'provides',
+    'Breaks': '',
+    'Conflicts': '',
+    'Replaces': ''
+}
 async function write_package_entries(dist, component, arch, skip_arch_all) {
     /**
      * Write package entries for the distribution + component + arch combinations
@@ -151,6 +163,20 @@ async function write_package_entries(dist, component, arch, skip_arch_all) {
             links_cell.append('See ', make_link(`#${source_id}`, 'Source'));
         } else {
             links_cell.append('N/A');
+        }
+
+        const dependencies_cell = row.insertCell();
+        for (const [deptype, depclass] of Object.entries(_DEPENDENCY_TYPE_TO_CLASS)) {
+            const dependency_text = package.get(deptype);
+            if (dependency_text) {
+                const dependency_heading = document.createElement('span');
+                dependency_heading.classList.add('dependency');
+                if (depclass) {
+                    dependency_heading.classList.add(`deptype-${depclass}`);
+                }
+                dependency_heading.append(deptype, ': ');
+                dependencies_cell.append(dependency_heading, dependency_text, document.createElement('br'));
+            }
         }
         table.append(row);
     }
