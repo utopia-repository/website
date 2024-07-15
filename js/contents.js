@@ -62,6 +62,17 @@ function make_tooltip(tooltip_text, contents) {
     return span;
 }
 
+function pretty_bytes(bytes) {
+    const units = ['B', 'kB', 'MB', 'GB', 'TB'];
+    let units_count = 0;
+    while (bytes > 1000 && units_count < units.length) {
+        bytes /= 1000;
+        units_count++;
+    }
+    // NBSP to keep the whole size on one line
+    return `${bytes.toFixed(2)}\xa0${units[units_count]}`;
+}
+
 const _DEPENDENCY_TYPE_TO_CLASS = {
     'Depends': 'depends',
     'Build-Depends': 'depends',
@@ -115,6 +126,7 @@ async function write_package_entries(dist, component, arch, skip_arch_all) {
         } else {
             download_url = new URL(package.get('Filename'), BASE_URL);
         }
+        const download_size = package.get('Size'); // binary pkgs only
 
         const row = document.createElement('tr');
         row.id = package_id;
@@ -140,6 +152,9 @@ async function write_package_entries(dist, component, arch, skip_arch_all) {
         const download_cell = row.insertCell();
         const download_link_text = parse_sources ? `source (${package_arch})` : package_arch;
         download_cell.append(make_link(download_url, download_link_text));
+        if (download_size) {
+            download_cell.append(` (${pretty_bytes(download_size)})`);
+        }
 
         const links_cell = row.insertCell();
         if (vcs_browser) {
