@@ -253,5 +253,7 @@ async function contents_main() {
         return;
     }
     const component = params.get('component') || 'main';
+    const heading = document.getElementById('contents_heading');
+    heading.innerText = `Package listings for ${dist}/${component}`;
     await write_contents(dist, component);
 }
