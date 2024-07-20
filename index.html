@@ -57,24 +57,30 @@ async function init() {
     <li><b>2023-06-11</b>: bookworm has been split from unstable for the Debian 12 release.</li>
 </ul>
 
-<h2 id="contents">Contents</h2>
-<p>The following releases are supported by the repository:
-<ul id="package_listings">
-    <li>Loading...</li>
-</ul>
+<div class="flex-container">
+    <div>
+        <h2 id="contents">Contents</h2>
+        <p>The following releases are supported by the repository:
+        <ul id="package_listings">
+            <li>Loading...</li>
+        </ul>
+    </div>
 
-<h3>Components Overview</h3>
-<ul>
-    <li>
-        <b>main</b>: Free software addons for Debian. For stable releases, this may also include unofficial backports for certain packages.
-    </li>
-    <li>
-        <b>meta</b>: This section contains Utopia-branded packages which ship my desktop settings and custom package sets (<a href="https://github.com/utopia-repository/utopia-packages">source</a>).
-    </li>
-    <li>
-        <b>imports</b>: Extra packages that are either imported from an external source or not supported well enough (by me) to put in main. This section may include non-free content.
-    </li>
-</ul>
+    <div>
+        <h2>Components Overview</h2>
+        <ul>
+            <li>
+                <b>main</b>: Free software addons for Debian. For stable releases, this may also include unofficial backports for certain packages.
+            </li>
+            <li>
+                <b>meta</b>: This section contains Utopia-branded packages which ship my desktop settings and custom package sets (<a href="https://github.com/utopia-repository/utopia-packages">source</a>).
+            </li>
+            <li>
+                <b>imports</b>: Extra packages that are either imported from an external source or not supported well enough (by me) to put in main. This section may include non-free content.
+            </li>
+        </ul>
+    </div>
+</div>
 
 <h2 id="instructions">Instructions</h2>
 <p>This repository works like any other APT repository, and is signed using a PGP key. Both HTTP and verified HTTPS are available.</p>
