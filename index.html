@@ -53,8 +53,6 @@ async function init() {
 <ul>
     <li><b>2024-07-13</b>: The repository now lives in the cloud! As such, the mirror network will be decommissioned shortly.</li>
     <li><b>2024-03-03</b>: The repository signing key has changed: <b>8AAA71DAE3BD50D5539A0100200A481378601485 Utopia Repository Signing Key &lt;admin at utopia-repository dot org&gt;</b>.</li>
-    <li><b>2023-12-29</b>: <s>New mirrors added: <b>deb0</b> (Los Angeles, CA, US) and <b>deb1</b> (Tampa, FL, US).</s></li>
-    <li><b>2023-06-11</b>: bookworm has been split from unstable for the Debian 12 release.</li>
 </ul>
 
 <div class="flex-container">
@@ -84,7 +82,7 @@ async function init() {
 
 <h2 id="instructions">Instructions</h2>
 <p>This repository works like any other APT repository, and is signed using a PGP key. Both HTTP and verified HTTPS are available.</p>
-<h3>1) Add the repository to sources.list</h3>
+<h3>1) Add the repository to sources.list.d</h3>
 
 <div class="requiresjs">
     <p>I am using <select id="os_selector" onchange="update_available_components()"></select> and would like the following sections:

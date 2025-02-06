@@ -22,35 +22,16 @@ function init_selectors() {
 }
 
 function refresh_text() {
-    console.log("Selected distribution " + selected_os)
-    console.log("Selected components " + selected_components)
+    console.log("Selected distribution:", selected_os);
+    console.log("Selected components:", selected_components);
 
-    displayed_components = []
-    output = ''
-
-    // Add each dist as either a special case or component
-    for (i = 0; i < selected_components.length; i++) {
-        component = selected_components[i]
-        special_url = SPECIAL_CASES[component]
-
-        if (special_url) {
-            // XXX: One day, template literals will be more elegant
-            special_url = special_url.replace('$current', selected_os)
-
-            output += ('deb ' + SIGNED_BY + special_url + '\ndeb-src ' + SIGNED_BY + special_url + '\n')
-        } else {
-            displayed_components.push(component)
-        }
-    }
-
-    if (displayed_components.length > 0) {
-        // Write both deb (binary) and deb-src (source) links.
-        url = BASE_URL + ' ' + selected_os + ' ' + displayed_components.join(' ')
-        // Add the primary sections first
-        output = 'deb ' + SIGNED_BY + url + '\ndeb-src ' + SIGNED_BY + url + '\n' + output
-    }
-
-    document.getElementById('sources_list').innerHTML = output
+    displayed_components = [];
+    output = `Types: deb deb-src
+URIs: ${BASE_URL}
+Suites: ${selected_os}
+Components: ${selected_components.join(' ')}
+Signed-By: ${PUBKEY_FILENAME}`;
+    document.getElementById('sources_list').innerHTML = output;
 }
 
 function update_selected_components() {

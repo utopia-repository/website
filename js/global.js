@@ -7,15 +7,12 @@ const RELEASE_NAMES = {
     'bookworm': 'Debian 12 (bookworm)'
 }
 
-const SIGNED_BY = "[signed-by=/usr/share/keyrings/utopia-repository.asc] ";
+const PUBKEY_FILENAME = "/usr/share/keyrings/utopia-repository.asc";
 
 // Hack for mirror support
 var BASE_URL;
 if (window.location.hostname.endsWith('.utopia-repository.org')) {
     BASE_URL = 'https://' + window.location.hostname + '/'
 } else {
-    BASE_URL = 'https://deb.utopia-repository.org/'
+    BASE_URL = 'https://deb.utopia-repository.org/';
 }
-
-// Defines special release/suite combinations in the suite picker
-const SPECIAL_CASES = {'experimental': BASE_URL + ' experimental main'}
