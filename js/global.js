@@ -3,7 +3,8 @@ const DIST_COMPONENTS = {};
 
 // Map distro codenames to display name
 const RELEASE_NAMES = {
-    'sid': 'Debian Testing/Unstable (trixie/sid)',
+    'sid': 'Debian Testing/Unstable (forky/sid)',
+    'trixie': 'Debian 13 (trixie)',
     'bookworm': 'Debian 12 (bookworm)'
 }
 
